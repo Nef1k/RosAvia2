@@ -1,0 +1,113 @@
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <!-- Modal title -->
+        <div class="modal-header">
+            <!-- Cross in the right upper coner -->
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+            <!-- The title itself -->
+            <h4 class="modal-title" id="myModalLabel">Привязать новые сертификаты к пользователю %username%</h4>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="row">
+                <!-- List of already attached certificates -->
+                <div class="col-md-4">
+
+                    <!-- Section title -->
+                    <h4>Привязанные сертификаты</h4>
+
+                    <!-- The list itself -->
+                    <table class="table table-striped pre-scrollable" id="certificates-table">
+                        <tr>
+                            <th>Номер</th>
+                            <th class="col-md-12">Статус</th>
+                        </tr>
+
+                        <!-- Attached certificates goes here from AJAX -->
+                    </table>
+                </div>
+
+                <!-- List of unattached certificates -->
+                <div class="col-md-5">
+                    <h4>Непривязанные сертификаты</h4>
+                    <button class="btn btn-default col-md-3">40000</button>
+                    <button class="btn btn-default col-md-3">dfs</button>
+                    <button class="btn btn-default col-md-3">dfs</button>
+                    <button class="btn btn-default col-md-3">df</button>
+                    <button class="btn btn-default col-md-3">sd</button>
+                    <button class="btn btn-default col-md-3">sdf</button>
+                    <button class="btn btn-default col-md-3">d</button>
+                    <button class="btn btn-default col-md-3">sd</button>
+                    <button class="btn btn-default col-md-3">ds</button>
+                    <button class="btn btn-default col-md-3">dsf</button>
+                    <button class="btn btn-default col-md-3">d</button>
+                    <button class="btn btn-default col-md-3">sf</button>
+                    <button class="btn btn-default col-md-3">dfs</button>
+                    <button class="btn btn-default col-md-3">df</button>
+                    <button class="btn btn-default col-md-3">asdws</button>
+                    <button class="btn btn-default col-md-3">dsf</button>
+                    <button class="btn btn-default col-md-3">dfs</button>
+                    <button class="btn btn-default col-md-3">dfs</button>
+                    <button class="btn btn-default col-md-3">dfs</button>
+                    <button class="btn btn-default col-md-3">dfs</button>
+                    <button class="btn btn-default col-md-3">dfs</button>
+                </div>
+
+                <!-- Helper panel for comfortable certificate attachment -->
+                <div class="col-md-3">
+                    <h4>Привязать</h4>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Привязать один
+                        </div>
+                        <div class="panel-body">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">ID</span>
+                                <input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Привязать диапазон
+                        </div>
+                        <div class="panel-body">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">От</span>
+                                <input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon3">
+                            </div>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">До</span>
+                                <input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Привязать количество
+                        </div>
+                        <div class="panel-body">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">C</span>
+                                <input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon3">
+                            </div>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">Кол-во</span>
+                                <input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon3">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-default" id="add_btn">Добавить</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- "Save" and "Close" buttons are here for a while -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+    </div>
+</div>

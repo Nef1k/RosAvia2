@@ -1,0 +1,64 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    {% include "default/navigation.html.twig" %}
+
+    <div class="row">
+        <!-- Title -->
+        <div class="col-md-12">
+            <h1>Панель администратора</h1>
+        </div>
+
+        <!-- Table with users -->
+        <div class="col-md-9">
+            <table class="table table-striped" id="user_table">
+                <tr>
+                    <th>ID</th>
+                    <th class="col-md-3">Имя пользователя</th>
+                    <th class="col-md-1">&nbsp;</th>
+                    <th class="col-md-4">Статус</th>
+                    <th class="col-md-4">E-mail</th>
+                </tr>
+
+                <tr class="loader-row">
+                    <td class="text-center" colspan="5">
+                        <img src="{{ asset("img/ring-alt.gif") }}" alt="Загрузка..." width="40" height="40">
+                    </td>
+                </tr>
+
+                <!-- Data comes from AJAX here -->
+            </table>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <!-- Certificates control panel -->
+            <div class="panel panel-default">
+                <div class="panel-heading">Сертификаты</div>
+                <div class="panel-body">
+                    <button type="button" class="btn btn-lg btn-default">Добавить сертификаты</button>
+                </div>
+            </div>
+
+            <!-- News block -->
+            <div class="panel panel-default">
+                <div class="panel-heading">Новости</div>
+                <div class="panel-body">
+                    <!-- Twitter block -->
+                    <a class="twitter-timeline"  href="https://twitter.com/hashtag/rosaviator_news" data-widget-id="759073961271500800">Твиты о #rosaviator_news</a>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal windows for certificate attachment -->
+    <div class="modal fade" id="attach-certificate-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        {% include "admin/modal/certificate_attach_modal.html.twig" %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset("js/get_user_info.js") }}" type="application/javascript"></script>
+    <!--<script src="{{ asset("js/get_user_cert_info.js") }}" type="application/javascript"></script>-->
+{% endblock %}

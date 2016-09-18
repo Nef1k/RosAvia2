@@ -1,0 +1,255 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: ASUS
+ * Date: 10.09.2016
+ * Time: 12:53
+ */
+namespace AppBundle\Controller;
+
+use AppBundle\Entity\User;
+use AppBundle\DataClasses\UserIDCheck;
+use AppBundle\DataClasses\CertCreation;
+use AppBundle\DataClasses\CertAttachment;
+use AppBundle\Form\UserEditType;
+use AppBundle\Entity\Sertificate;
+use Doctrine\ORM\EntityManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+
+class AdminController extends Controller{
+
+    /**
+     * @param Request $request
+     * @return Response
+     *
+     * @Route("/admin", name="admin_index")
+     */
+    public function indexAction(Request $request){
+        return $this->render("admin/index.html.twig");
+    }
+
+
+    /**
+     * @param Request $request
+     * @return Response
+     *
+     * @Route("/admin/user_table", name = "user_table")
+     *
+     * @Method("GET")
+     */
+    public function showUserTableAction(Request $request){
+        /** @var $em EntityManager */
+        $em = $this -> getDoctrine() -> getManager();
+        /** @var $users User[] */
+        $users = $em->getRepository("AppBundle:User")->findBy([],['username'=>'ASC']);
+
+        $users_array = [];
+        foreach($users as $user){
+            $user_array_item = [];
+            $user_array_item["userInfoLink"] = $this->get('router')->generate('user_info', ['ID_User' => $user->getIDUser()]);
+            $user_array_item["ID_User"] = $user->getIDUser();
+            $user_array_item["username"] = $user->getUsername();
+            $user_array_item["email"] = $user->getEmail();
+            $user_array_item["role"] = $user->getIDUserGroup()->getDisplayName();
+
+            array_push($users_array, $user_array_item);
+        }
+        
+        $response = new Response();
+        $errors = [];
+        $Request_output = array(
+            'users' => $users_array,
+            'error_msg' => $errors
+        );
+        $response->setContent(json_encode($Request_output));
+        $response->headers -> set('Content-Type', 'application/json');
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     *
+     * @Route("/admin/attach", name = "attach_cert")
+     *
+     * @Method("GET")
+     */
+    public function showUserCertAction(Request $request){
+        $response = new Response();
+        $ID_User = $request->query->get('user_id');
+        $request_data = new UserIDCheck();
+        $request_data->setUserID($ID_User);
+        $validator = $this->get('validator');
+        $errors = $validator->validate($request_data);
+        $att_certs = [];
+        $unatt_certs = [];
+        if (count($errors) == 0){
+            /** @var $em EntityManager */
+            $em = $this->getDoctrine()->getManager();
+            /** @var $certs Sertificate[]*/
+            $certs = $em->getRepository("AppBundle:Sertificate")->findBy(array('ID_User' => $ID_User));
+            foreach($certs as $cert){
+                $cert_array_item = [];
+                $cert_array_item["ID_certificate"] = $cert->getIDSertificate();
+                $cert_array_item["CertState"] = $cert->getSertState()->getName();
+                array_push($att_certs, $cert_array_item);
+            }
+            $certs = $em->getRepository("AppBundle:Sertificate")->findBy(array('ID_SertState' => 0));
+            foreach($certs as $cert){
+                $cert_array_item = [];
+                $cert_array_item["ID_certificate"] = $cert->getIDSertState();
+                array_push($unatt_certs, $cert_array_item);
+            }
+        }
+        $Request_output = array(
+            'unatt_certs' => $unatt_certs,
+            'att_certs' => $att_certs,
+            'error_msg' => array(),
+            'error_param' => array()
+        );
+        foreach($errors as $error){
+            array_push($Request_output['error_msg'],$error->getMessage());
+            array_push($Request_output['error_param'], $error->getInvalidValue());
+        }
+
+        $response->setContent(json_encode($Request_output));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @Route("/admin/cert_attachment", name = "cert_attachment")
+     * @Method("POST")
+     * @return Response
+     */
+    public function attachCertAction(Request $request){
+        $response = new Response();
+        $attachInfo = new CertAttachment();
+        $attachInfo
+            ->setCertIds(json_decode($request->request->get('cert_ids')))
+            ->setUserId($request->request->get('user_id'));
+        $validator = $this->get('validator');
+        $errors = $validator->validate($attachInfo);
+        $em = $this->getDoctrine()->getManager();
+        $Request_output = array(
+            'error_msg' => array(),
+            'error_param' =>array()
+        );
+        if(count($errors) == 0) {
+            $userAttachTo = $this->getDoctrine()->getRepository("AppBundle:User")->find($attachInfo->getUserId());
+            foreach($attachInfo->getCertIds() as $cert_id){
+                /** @var  $cert Sertificate*/
+                $cert = $em->getRepository("AppBundle:Sertificate")->find($cert_id);
+                $cert->setIDUser($userAttachTo);
+                $em->persist($cert);
+                $em->flush();
+            }
+            array_push($Request_output, 'success');
+        }
+        foreach($errors as $error){
+            array_push($Request_output['error_msg'],$error->getMessage());
+            array_push($Request_output['error_param'], $error->getInvalidValue());
+        }
+        $response->setContent(json_encode($Request_output));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @Route("/admin/cert_creation", name = "cert_creation")
+     * @Method("POST")
+     * @return Response
+     */
+    public function createCertAction(Request $request){
+        $response = new Response();
+        $certs = new CertCreation();
+        $user = $this->getUser();
+        $certs->setCertIdArray(json_decode($request->request->get('cert_ids')));
+        $validator = $this->get('validator');
+        $errors = $validator->validate($certs);
+        $em = $this->getDoctrine()->getManager();
+        $Request_output = array(
+            'error_msg' => array()
+        );
+        if(count($errors) == 0){
+            foreach($certs->getCertIdArray() as $cert_id) {
+                /** @var $cert_state SertState */
+                $cert_state = $this->getDoctrine()->getRepository("AppBundle:SertState")->find(0);
+                $cert = new Sertificate();
+                $cert->
+                    setIDSertificate($cert_id)->
+                    setIDSertState($cert_state)->
+                    setIDUser($user);
+                $em->persist($cert);
+            }
+            $em->flush();
+            array_push($Request_output, 'success');
+        }
+        foreach($errors as $error){
+            array_push($Request_output['error_msg'],$error->getMessage());
+        }
+        $response->setContent(json_encode($Request_output));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     *
+     * @Route("/admin/user_edit", name = "user_edit")
+     *
+     * @Method("GET")
+     */
+    public function showUserProfile(Request $request){
+        $user_id = new UserIDCheck();
+        $user_id->setUserID($request->query->get('user_id'));
+        $response = new Response();
+        /** @var  $users User[]*/
+        $em = $this->getDoctrine()->getManager();
+        /** @var  $em EntityManager */
+        $validator = $this->get('validator');
+        $errors = $validator->validate($user_id);
+        $user_info_array = [];
+        if (count($errors) == 0) {
+            $users = $em->getRepository("AppBundle:User")->findBy(array('ID_User' => $user_id->getUserID()));
+            foreach ($users as $user) {
+                $user_info_array["username"] = $user->getUsername();
+                $user_info_array["email"] = $user->getEmail();
+                $user_info_array["group_name"] = $user->getIDUserGroup()->getName();
+                $user_info_array["role"] = $user->getRoles();
+            }
+        }
+        $Request_output = array(
+            'error_msg' => array(),
+            'user_info' => $user_info_array
+        );
+        foreach($errors as $error){
+            array_push($Request_output['error_msg'],$error->getMessage());
+        }
+        $response->setContent(json_encode($Request_output));
+        $response -> headers -> set('Content-Type', 'application/json');
+        return $response;
+    }
+    /*
+    /**
+     * @param Request $request
+     * @return string
+     *
+     * @Route("/admin/user_edit/{user}", name="users_edit")
+     */
+    /*public function userEditAction(User $user, Request $request){
+        $userEditForm = $this->createForm(UserEditType::class);
+        return $this->render("admin/user_edit.html.twig", [
+            "user" => $user,
+            "edit_form" => $userEditForm->createView(),
+        ]);
+    }*/
+}
