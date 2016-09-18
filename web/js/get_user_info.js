@@ -32,6 +32,11 @@ function appendLoaderInTable(table_selector, colspan){
 }
 
 function fillUserTableWithData(table_selector, data){
+    $("#unattached_certs_count").after(
+        "<span class=\"badge\">" +
+        data.unattached_certs +
+        "</span>"
+    );
     data.users.forEach(function(item, i){
         $(table_selector).after(
             "<tr>" +
