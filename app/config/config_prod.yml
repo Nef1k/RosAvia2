@@ -1,6 +1,5 @@
 imports:
     - { resource: config.yml }
-    - { resource: config_prod_secrets.php }
 
 #doctrine:
 #    orm:
@@ -15,7 +14,7 @@ monolog:
             action_level: error
             handler:      nested
         nested:
-            type:  error_log
+            type:  stream
             path:  "php://stderr"
             level: debug
         console:
