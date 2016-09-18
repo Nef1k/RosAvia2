@@ -126,6 +126,7 @@ class AdminController extends Controller{
     }
 
     /**
+     * Some comment goes here
      * @param Request $request
      * @Route("/admin/cert_attachment", name = "cert_attachment")
      * @Method("POST")
