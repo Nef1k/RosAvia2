@@ -12,6 +12,8 @@ use AppBundle\Entity\User;
 use AppBundle\DataClasses\UserIDCheck;
 use AppBundle\DataClasses\CertCreation;
 use AppBundle\DataClasses\CertAttachment;
+use AppBundle\Entity\GroupParam;
+use AppBundle\Entity\ParamValue;
 use AppBundle\Entity\Sertificate;
 use AppBundle\Entity\SertState;
 use Doctrine\ORM\EntityManager;
@@ -126,6 +128,7 @@ class AdminController extends Controller{
     }
 
     /**
+     * Some comment goes here
      * @param Request $request
      * @Route("/admin/cert_attachment", name = "cert_attachment")
      * @Method("POST")
@@ -258,49 +261,50 @@ class AdminController extends Controller{
             ->setUserGroupId($request->query->get('user_group_id'));
         $validator = $this->get('validator');
         $errors = $validator->validate($request_input);
-        if (count($errors) == 0){
+        $request_output = array(
+            'error_msg' => array(),
+            'error_param' => array(),
+            'params' => array()
+        );
+        if (count($errors) == 0) {
+
             $sql = "
                 SELECT
-	                group_param.ID_GroupParam,
+                    group_param.ID_GroupParam AS 'id',
                     group_param.name,
                     user_params.value
                 FROM
-	                group_param
-    
+                    group_param
+        
                 LEFT JOIN(
-	                SELECT
-		                *
-	                FROM
-		                param_value
-	                WHERE
-		                param_value.ID_User = :user_id
+                    SELECT
+                        *
+                    FROM
+                        param_value
+                    WHERE
+                        param_value.ID_User = :user_id
                     ) AS user_params
                 ON
-	                group_param.ID_GroupParam = user_params.ID_GroupParam
-    
+                    group_param.ID_GroupParam = user_params.ID_GroupParam
+        
                 WHERE
-	                group_param.ID_UserGroup = :user_group_id";
-            $rsm = new ResultSetMapping();
-            $rsm->addEntityResult("AppBundle:GroupParam","params");
-            $rsm->addFieldResult("params","ID_GroupParam","ID_GroupParam");
-            $rsm->addFieldResult("params","name","name");
-            
-
+                    group_param.ID_UserGroup = :user_group_id";
+            $query = $this->getDoctrine()->getConnection()->prepare($sql);
+            $query->execute(array(
+                'user_id' => $request_input->getUserId(),
+                'user_group_id' => $request_input->getUserGroupId()
+                ));
+            $params = $query->fetchAll();
+            dump($params);
         }
+        foreach($errors as $error){
+            array_push($request_output['error_msg'],$error->getMessage());
+            array_push($request_output['error_param'],$error->getInvalidValue());
+        }
+        $response = new Response();
+        $response->setContent(json_encode($request_output));
+        $response -> headers -> set('Content-Type', 'application/json');
+        return $response;
 
     }
-    /*
-    /**
-     * @param Request $request
-     * @return string
-     *
-     * @Route("/admin/user_edit/{user}", name="users_edit")
-     */
-    /*public function userEditAction(User $user, Request $request){
-        $userEditForm = $this->createForm(UserEditType::class);
-        return $this->render("admin/user_edit.html.twig", [
-            "user" => $user,
-            "edit_form" => $userEditForm->createView(),
-        ]);
-    }*/
 }
