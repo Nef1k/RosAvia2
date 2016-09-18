@@ -271,8 +271,8 @@ class AdminController extends Controller{
             $sql = "
                 SELECT
                     group_param.ID_GroupParam AS 'id',
-                    group_param.name,
-                    user_params.value
+                    group_param.name AS 'name',
+                    user_params.value AS 'value'
                 FROM
                     group_param
         
@@ -295,7 +295,12 @@ class AdminController extends Controller{
                 'user_group_id' => $request_input->getUserGroupId()
                 ));
             $params = $query->fetchAll();
-            dump($params);
+            foreach($params as $param){
+                $param_info = [];
+                $param_info['name'] = $param['name'];
+                $param_info['value'] = $param['value'];
+                array_push($Request_output['params'],$param_info);
+            }
         }
         foreach($errors as $error){
             array_push($Request_output['error_msg'],$error->getMessage());
@@ -305,6 +310,5 @@ class AdminController extends Controller{
         $response->setContent(json_encode($Request_output));
         $response -> headers -> set('Content-Type', 'application/json');
         return $response;
-
     }
 }
