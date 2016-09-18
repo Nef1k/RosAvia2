@@ -7,6 +7,7 @@
  */
 namespace AppBundle\Controller;
 
+use AppBundle\DataClasses\UserEdition;
 use AppBundle\Entity\User;
 use AppBundle\DataClasses\UserIDCheck;
 use AppBundle\DataClasses\CertCreation;
@@ -103,7 +104,7 @@ class AdminController extends Controller{
             $certs = $em->getRepository("AppBundle:Sertificate")->findBy(array('ID_SertState' => 0));
             foreach($certs as $cert){
                 $cert_array_item = [];
-                $cert_array_item["ID_certificate"] = $cert->getIDSertState();
+                $cert_array_item["ID_certificate"] = $cert->getIDSertificate();
                 array_push($unatt_certs, $cert_array_item);
             }
         }
@@ -250,12 +251,34 @@ class AdminController extends Controller{
      * @Method("GET")
      */
     public function showGroupParams(Request $request){
-        $user_id = new UserIDCheck();
-        $user_id->setUserID($request->query->get('user_id'));
+        $request_input = new UserEdition();
+        $request_input
+            ->setUserId($request->query->get('user_id'))
+            ->setUserGroupId($request->query->get('user_group_id'));
         $validator = $this->get('validator');
-        $errors = $validator->validate($user_id);
+        $errors = $validator->validate($request_input);
         if (count($errors) == 0){
-            
+            $sql = "
+                SELECT
+	                group_param.ID_GroupParam,
+                    group_param.name,
+                    user_params.value
+                FROM
+	                group_param
+    
+                LEFT JOIN(
+	                SELECT
+		                *
+	                FROM
+		                param_value
+	                WHERE
+		                param_value.ID_User = :user_id
+                    ) AS user_params
+                ON
+	                group_param.ID_GroupParam = user_params.ID_GroupParam
+    
+                WHERE
+	                group_param.ID_UserGroup = :user_group_id";
         }
 
     }
