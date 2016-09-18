@@ -19,7 +19,7 @@ class UserEdition
      *      @Assert\Type(
      *          type="digit",
      *          message="Значение не может быть не числом.")
-     *      @CheckAssert\CheckUserID()
+     *      @MyAssert\CheckUserID()
      *      @Assert\NotNull(message = "Значение не может быть нулевым")
      */
     protected $user_id;
@@ -30,7 +30,7 @@ class UserEdition
      *      @Assert\Type(
      *          type="digit",
      *          message="Значение не может быть не числом.")
-     *      @CheckAssert\CheckUserGroupID()
+     *      @MyAssert\CheckUserGroupID()
      *      @Assert\NotNull(message = "Значение не может быть нулевым")
      */
     protected $user_group_id;
