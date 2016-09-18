@@ -66,19 +66,33 @@ function attachBtnClick(event){
     jQuery.getJSON("/admin/attach?user_id="+user_id, function (data){
         $(loader).remove();
         $(certificates_loader).remove();
-        data.att_certs.forEach(function(item, i){
+        if (data.att_certs.length == 0){
             $("#certificates-table tr:last").after(
-                "<tr class='certificate-row'>" +
-                "<td>" + item.ID_certificate + "</td>" +
-                "<td>" + item.CertState + "</td>" +
-                "</tr>"
+                "<tr class='certificate-row'><td colspan=\"2\">Нет привязанных сертификатов</td>"
             );
-        });
-        data.unatt_certs.forEach(function(item, i){
-            $("#unattached_certs h4").after(
-                "<button class=\"btn btn-default col-md-3\" id=\"" + item.ID_certificate + "\">" + item.ID_certificate + "</button>"
+        }
+        else {
+            data.att_certs.forEach(function(item, i){
+                $("#certificates-table tr:last").after(
+                    "<tr class='certificate-row'>" +
+                    "<td>" + item.ID_certificate + "</td>" +
+                    "<td>" + item.CertState + "</td>" +
+                    "</tr>"
+                 );
+            });
+        }
+        if (data.unatt_certs.length == 0){
+            $("#certificates-table tr:last").after(
+                "Нет доступных сертификатов"
             );
-        });
+        }
+        else {
+            data.unatt_certs.forEach(function (item, i) {
+                $("#unattached_certs h4").after(
+                    "<button class=\"btn btn-default col-md-3\" id=\"" + item.ID_certificate + "\">" + item.ID_certificate + "</button>"
+                );
+            });
+        }
     });
 }
 
