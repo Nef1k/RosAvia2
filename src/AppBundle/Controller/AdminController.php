@@ -102,7 +102,7 @@ class AdminController extends Controller{
                 $cert_array_item["CertState"] = $cert->getSertState()->getName();
                 array_push($att_certs, $cert_array_item);
             }
-            $certs = $em->getRepository("AppBundle:Sertificate")->findBy(array('ID_SertState' => 0), array('ID_Sertificate' => 'DESC'));
+            $certs = $em->getRepository("AppBundle:Sertificate")->findBy(array('ID_SertState' => 0), array('ID_Sertificate' => 'ASC'));
             foreach($certs as $cert){
                 $cert_array_item = [];
                 $cert_array_item["ID_certificate"] = $cert->getIDSertificate();
@@ -281,10 +281,6 @@ class AdminController extends Controller{
                 WHERE
 	                group_param.ID_UserGroup = :user_group_id";
             $rsm = new ResultSetMapping();
-            $rsm->addEntityResult("AppBundle:GroupParam","params");
-            $rsm->addFieldResult("params","ID_GroupParam","ID_GroupParam");
-            $rsm->addFieldResult("params","name","name");
-            
 
         }
 
