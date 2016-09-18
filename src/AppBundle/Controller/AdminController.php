@@ -261,7 +261,7 @@ class AdminController extends Controller{
             ->setUserGroupId($request->query->get('user_group_id'));
         $validator = $this->get('validator');
         $errors = $validator->validate($request_input);
-        $request_output = array(
+        $Request_output = array(
             'error_msg' => array(),
             'error_param' => array(),
             'params' => array()
@@ -298,11 +298,11 @@ class AdminController extends Controller{
             dump($params);
         }
         foreach($errors as $error){
-            array_push($request_output['error_msg'],$error->getMessage());
-            array_push($request_output['error_param'],$error->getInvalidValue());
+            array_push($Request_output['error_msg'],$error->getMessage());
+            array_push($Request_output['error_param'],$error->getInvalidValue());
         }
         $response = new Response();
-        $response->setContent(json_encode($request_output));
+        $response->setContent(json_encode($Request_output));
         $response -> headers -> set('Content-Type', 'application/json');
         return $response;
 
