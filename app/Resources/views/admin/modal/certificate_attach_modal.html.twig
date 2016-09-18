@@ -44,8 +44,10 @@
                         <div class="panel-body">
                             <div class="input-group input-group-sm">
                                 <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">ID</span>
-                                <input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon3">
+                                <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="ID">
+                                <span class="glyphicon form-control-feedback"></span>
                             </div>
+
                         </div>
                     </div>
                     <div class="panel panel-default">
@@ -55,12 +57,16 @@
                         <div class="panel-body">
                             <div class="input-group input-group-sm">
                                 <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">От</span>
-                                <input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon3">
+                                <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="from1">
+                                <span class="glyphicon form-control-feedback"></span>
                             </div>
+
                             <div class="input-group input-group-sm">
                                 <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">До</span>
-                                <input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon3">
+                                <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="to">
+                                <span class="glyphicon form-control-feedback"></span>
                             </div>
+
                         </div>
                     </div>
                     <div class="panel panel-default">
@@ -70,15 +76,19 @@
                         <div class="panel-body">
                             <div class="input-group input-group-sm">
                                 <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">C</span>
-                                <input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon3">
+                                <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="from2">
+                                <span class="glyphicon form-control-feedback"></span>
                             </div>
+
                             <div class="input-group input-group-sm">
                                 <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">Кол-во</span>
-                                <input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon3">
+                                <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="count">
+                                <span class="glyphicon form-control-feedback"></span>
                             </div>
+
                         </div>
                     </div>
-                    <button type="button" class="btn btn-default" id="add_btn">Добавить</button>
+                    <button type="button" class="btn btn-default" id="addBtn">Добавить</button>
                 </div>
             </div>
         </div>
@@ -86,7 +96,7 @@
         <!-- "Save" and "Close" buttons are here for a while -->
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button id="save" type="button" class="btn btn-primary">Save changes</button>
         </div>
     </div>
 </div>
