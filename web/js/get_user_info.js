@@ -38,7 +38,7 @@ function fillUserTableWithData(table_selector, data){
             "<td>" + item.ID_User + "</td>" +
             "<td><a href='"+ item.userInfoLink +"'>" + item.username + "</a></td>" +
             "<td>" +
-            "<button data-toggle='modal' data-target='#attach-certificate-modal' class=\"btn btn-xs btn-default attach-certificate-btn\" data-user_id=\""+ item.ID_User +"\">" +
+            "<button data-toggle='modal' data-target='#attach-certificate-modal' class=\"btn btn-xs btn-default attach-certificate-btn\" data-user_id=\""+ item.ID_User +"\" data-username=\""+item.username+"\">" +
             "<span class='glyphicon glyphicon-link'></span>" +
             "</button>" +
             "</td>" +
@@ -51,10 +51,12 @@ function fillUserTableWithData(table_selector, data){
 
 function attachBtnClick(event){
     var user_id = $(this).data("user_id");
+    var username = $(this).data("username");
     //Clearing up previous certificates
     $(".certificate-row").remove();
 
     var loader = appendLoaderInTable("#certificates-table", 2);
+    $("#username").html(username);
 
     //Sending AJAX request to retrieve attached certificates
     jQuery.getJSON("/admin/attach?user_id="+user_id, function (data){
