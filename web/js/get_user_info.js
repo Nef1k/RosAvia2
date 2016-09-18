@@ -57,6 +57,7 @@ function attachBtnClick(event){
     var username = $(this).data("username");
     //Clearing up previous certificates
     $(".certificate-row").remove();
+    $(".unatt_btn").remove();
 
     var loader = appendLoaderInTable("#certificates-table", 2);
     var certificates_loader = appendLoaderGif("#unattached_certs");
@@ -89,7 +90,7 @@ function attachBtnClick(event){
         else {
             data.unatt_certs.forEach(function (item, i) {
                 $("#unattached_certs h4").after(
-                    "<button class=\"btn btn-default col-md-3\" id=\"" + item.ID_certificate + "\">" + item.ID_certificate + "</button>"
+                    "<button class=\"unatt_btn btn btn-default col-md-3\" id=\"" + item.ID_certificate + "\">" + item.ID_certificate + "</button>"
                 );
             });
         }
