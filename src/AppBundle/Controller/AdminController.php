@@ -11,8 +11,8 @@ use AppBundle\Entity\User;
 use AppBundle\DataClasses\UserIDCheck;
 use AppBundle\DataClasses\CertCreation;
 use AppBundle\DataClasses\CertAttachment;
-use AppBundle\Form\UserEditType;
 use AppBundle\Entity\Sertificate;
+use AppBundle\Entity\SertState;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -59,12 +59,13 @@ class AdminController extends Controller{
 
             array_push($users_array, $user_array_item);
         }
-        
+        $unattached_certs = count($em->getRepository("AppBundle:Sertificate")->findBy(array('ID_SertState' => 0)));
         $response = new Response();
         $errors = [];
         $Request_output = array(
             'users' => $users_array,
-            'error_msg' => $errors
+            'error_msg' => $errors,
+            'unattached_certs' => $unattached_certs
         );
         $response->setContent(json_encode($Request_output));
         $response->headers -> set('Content-Type', 'application/json');
@@ -142,6 +143,7 @@ class AdminController extends Controller{
             'error_param' =>array()
         );
         if(count($errors) == 0) {
+            /** @var $userAttachTo User */
             $userAttachTo = $this->getDoctrine()->getRepository("AppBundle:User")->find($attachInfo->getUserId());
             foreach($attachInfo->getCertIds() as $cert_id){
                 /** @var  $cert Sertificate*/
@@ -208,7 +210,7 @@ class AdminController extends Controller{
      *
      * @Method("GET")
      */
-    public function showUserProfile(Request $request){
+    public function showUserParams(Request $request){
         $user_id = new UserIDCheck();
         $user_id->setUserID($request->query->get('user_id'));
         $response = new Response();
@@ -237,6 +239,25 @@ class AdminController extends Controller{
         $response->setContent(json_encode($Request_output));
         $response -> headers -> set('Content-Type', 'application/json');
         return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     *
+     * @Route("/admin/user_group_edit", name = "user_group_edit")
+     *
+     * @Method("GET")
+     */
+    public function showGroupParams(Request $request){
+        $user_id = new UserIDCheck();
+        $user_id->setUserID($request->query->get('user_id'));
+        $validator = $this->get('validator');
+        $errors = $validator->validate($user_id);
+        if (count($errors) == 0){
+            
+        }
+
     }
     /*
     /**
