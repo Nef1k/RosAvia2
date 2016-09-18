@@ -11,7 +11,9 @@ function appendLoaderGif(selector){
         height: 40
     });
 
-    return $(selector).append(image);
+    $(selector).append(image);
+
+    return $(image);
 }
 
 function appendLoaderInTable(table_selector, colspan){
@@ -57,11 +59,13 @@ function attachBtnClick(event){
     $(".certificate-row").remove();
 
     var loader = appendLoaderInTable("#certificates-table", 2);
+    var certificates_loader = appendLoaderGif("#unattached_certs");
     $("#username").html(username);
 
     //Sending AJAX request to retrieve attached certificates
     jQuery.getJSON("/admin/attach?user_id="+user_id, function (data){
         $(loader).remove();
+        $(certificates_loader).remove();
         data.att_certs.forEach(function(item, i){
             $("#certificates-table tr:last").after(
                 "<tr class='certificate-row'>" +
@@ -69,7 +73,12 @@ function attachBtnClick(event){
                 "<td>" + item.CertState + "</td>" +
                 "</tr>"
             );
-        })
+        });
+        data.unatt_certs.forEach(function(item, i){
+            $("#unattached_certs h4").after(
+                "<button class=\"btn btn-default col-md-3\" id=\"" + item.ID_certificate + "\">" + item.ID_certificate + "</button>"
+            );
+        });
     });
 }
 
