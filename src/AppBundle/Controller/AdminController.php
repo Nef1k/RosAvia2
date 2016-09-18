@@ -15,6 +15,7 @@ use AppBundle\DataClasses\CertAttachment;
 use AppBundle\Entity\Sertificate;
 use AppBundle\Entity\SertState;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -101,7 +102,7 @@ class AdminController extends Controller{
                 $cert_array_item["CertState"] = $cert->getSertState()->getName();
                 array_push($att_certs, $cert_array_item);
             }
-            $certs = $em->getRepository("AppBundle:Sertificate")->findBy(array('ID_SertState' => 0));
+            $certs = $em->getRepository("AppBundle:Sertificate")->findBy(array('ID_SertState' => 0), array('ID_Sertificate' => 'ASC'));
             foreach($certs as $cert){
                 $cert_array_item = [];
                 $cert_array_item["ID_certificate"] = $cert->getIDSertificate();
@@ -279,6 +280,8 @@ class AdminController extends Controller{
     
                 WHERE
 	                group_param.ID_UserGroup = :user_group_id";
+            $rsm = new ResultSetMapping();
+
         }
 
     }
