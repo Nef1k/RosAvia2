@@ -36,14 +36,68 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Сертификаты</div>
                 <div class="panel-body">
-                            <div class="pull-left">
-                                Доступно:&nbsp;<span id="unattached_certs_count" >%counter%</span>
-                            </div>
-                            <div class="pull-right">
-                                <button class="btn btn-xs btn-default" id="create_cert" data-toggle="modal" data-target="#create-certificates-modal"><b>Создать</b></button>
-                            </div>
+                    <div class="pull-left">
+                        Доступно:&nbsp;<span id="unattached_certs_count" >%counter%</span>
+                    </div>
+                    <div class="pull-right">
+                        <button class="btn btn-xs btn-primary" data-toggle="collapse" data-target="#create_certs_hided_menu"><b>Создать</b></button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--Certificates creating hided menu-->
+            <div id="create_certs_hided_menu" class="collapse">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Создать один
+                    </div>
+                    <div class="panel-body">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">ID</span>
+                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="ID">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Создать диапазон
+                    </div>
+                    <div class="panel-body">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">От</span>
+                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="from1">
+                        </div>
+
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">До</span>
+                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="to">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Создать несколько
+                    </div>
+                    <div class="panel-body">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">C</span>
+                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="from2">
+                        </div>
+
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">Кол-во</span>
+                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="count">
+                        </div>
+                        <br>
+                        <button class="pull-left btn btn-default" id="create_certs" data-toggle="collapse" data-target="#create_certs_hided_menu">Отмена</button>
+                        <button class="pull-right btn btn-primary" id="create_certs">Сохранить</button>
+                    </div>
                 </div>
             </div>
+
 
             <!-- News block -->
             <div class="panel panel-default">
