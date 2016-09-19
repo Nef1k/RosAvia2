@@ -65,10 +65,10 @@ class AdminController extends Controller{
         }
         $unattached_certs = count($em->getRepository("AppBundle:Sertificate")->findBy(array('ID_SertState' => 0)));
         $response = new Response();
-        $errors = [];
         $Request_output = array(
             'users' => $users_array,
-            'error_msg' => $errors,
+            'error_msg' => array(),
+            'error_param' => array(),
             'unattached_certs' => $unattached_certs
         );
         $response->setContent(json_encode($Request_output));
@@ -183,7 +183,8 @@ class AdminController extends Controller{
         $errors = $validator->validate($certs);
         $em = $this->getDoctrine()->getManager();
         $Request_output = array(
-            'error_msg' => array()
+            'error_msg' => array(),
+            'error_param' => array()
         );
         if(count($errors) == 0){
             foreach($certs->getCertIdArray() as $cert_id) {
@@ -201,6 +202,7 @@ class AdminController extends Controller{
         }
         foreach($errors as $error){
             array_push($Request_output['error_msg'],$error->getMessage());
+            array_push($Request_output['error_param'],$error->getInvalidValue());
         }
         $response->setContent(json_encode($Request_output));
         $response->headers->set('Content-Type', 'application/json');
@@ -220,7 +222,7 @@ class AdminController extends Controller{
         $user_id->setUserID($request->query->get('user_id'));
         $response = new Response();
         /** @var  $users User[]*/
-        $em = $this->getDoctrine()->getManager();
+            $em = $this->getDoctrine()->getManager();
         /** @var  $em EntityManager */
         $validator = $this->get('validator');
         $errors = $validator->validate($user_id);
@@ -230,19 +232,20 @@ class AdminController extends Controller{
             foreach ($users as $user) {
                 $user_info_array["username"] = $user->getUsername();
                 $user_info_array["email"] = $user->getEmail();
-                $user_info_array["group_name"] = $user->getIDUserGroup()->getName();
-                $user_info_array["role"] = $user->getRoles();
+                $user_info_array["group_name"] = $user->getIDUserGroup()->getDisplayName();
             }
         }
         $Request_output = array(
             'error_msg' => array(),
+            'error_param' => array(),
             'user_info' => $user_info_array
         );
         foreach($errors as $error){
             array_push($Request_output['error_msg'],$error->getMessage());
+            array_push($Request_output['error_param'],$error->getInvalidValue());
         }
         $response->setContent(json_encode($Request_output));
-        $response -> headers -> set('Content-Type', 'application/json');
+        $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
 
@@ -299,6 +302,7 @@ class AdminController extends Controller{
                 $param_info = [];
                 $param_info['name'] = $param['name'];
                 $param_info['value'] = $param['value'];
+                $param_info['id'] = $param['id'];
                 array_push($Request_output['params'],$param_info);
             }
         }
@@ -311,4 +315,59 @@ class AdminController extends Controller{
         $response -> headers -> set('Content-Type', 'application/json');
         return $response;
     }
+
+    /**
+     * @param Request $request
+     * @return Response
+     *
+     * @Route("/admin/user_insert", name = "user_insert")
+     *
+     * @Method("POST")
+     */
+    public function insertUserParams(Request $request){
+        $user_id = new UserIDCheck();
+        $user_id->setUserID($request->query->get('user_id'));
+        $response = new Response();
+        $em = $this->getDoctrine()->getManager();
+        /** @var  $em EntityManager */
+        $validator = $this->get('validator');
+        $errors = $validator->validate($user_id);
+        if (count($errors) == 0){
+            /** @var  $user User*/
+            $user = $em->getRepository("AppBundle:User")->findBy(array('ID_User' => $user_id->getUserID()));
+            $general_settings = json_decode($request->query->get('general_settings'));
+            $additional_settings = json_decode($request->query->get('additional_settings'));
+            $user_group = $em->getRepository("AppBundle:UserGroup")->find($general_settings['group_id']);
+            $user->setUserGroup($user_group);
+            $user->setEmail($general_settings['email']);
+            $em->persist($user);
+            $em->flush();
+            foreach($additional_settings as $param){
+                /** @var  $group_param GroupParam*/
+                $group_param = $em->getRepository("AppBundle:GroupParam")->find($param['id']);
+                /** @var  $param_value ParamValue*/
+                $param_value = $em->getRepository("AppBundle:ParamValue")->findBy(array('ID_User' => $user, 'ID_GroupParam' => $group_param));
+                if(!$param_value){
+                    $param_value->setGroupParam($group_param);
+                    $param_value->setUser($user);
+                }
+                $param_value->setValue($param['value']);
+                $em->persist($param_value);
+                $em->flush();
+            }
+        }
+        $Request_output = array(
+            'error_msg' => array(),
+            'error_param' => array()
+        );
+        foreach($errors as $error){
+            array_push($Request_output['error_msg'],$error->getMessage());
+            array_push($Request_output['error_param'],$error->getInvalidValue());
+        }
+        $response = new Response();
+        $response->setContent(json_encode($Request_output));
+        $response -> headers -> set('Content-Type', 'application/json');
+        return $response;
+    }
+
 }
