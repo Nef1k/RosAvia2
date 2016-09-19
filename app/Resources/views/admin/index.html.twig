@@ -34,37 +34,32 @@
         <div class="col-md-3">
             <!-- Certificates control panel -->
             <div class="panel panel-default">
-                <div class="panel-heading">Сертификаты</div>
+                <div class="panel-heading"><b>Сертификаты</b></div>
                 <div class="panel-body">
                     <div class="pull-left">
                         Доступно:&nbsp;<span id="unattached_certs_count" >%counter%</span>
                     </div>
                     <div class="pull-right">
-                        <button class="btn btn-xs btn-primary" data-toggle="collapse" data-target="#create_certs_hided_menu"><b>Создать</b></button>
+                        <button class="btn btn-xs btn-default" data-toggle="collapse" data-target="#create_certs_hided_menu"><b>Создать</b></button>
                     </div>
                 </div>
 
-            </div>
-
-            <!--Certificates creating hided menu-->
-            <div id="create_certs_hided_menu" class="collapse">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Создать один
-                    </div>
-                    <div class="panel-body">
+                <!--Certificates creating hided menu-->
+                <ul id="create_certs_hided_menu" class="collapse list-group">
+                    <li class="list-group-item list-group-item-info">
+                        <b>Создать один</b>
+                    </li>
+                    <li class="list-group-item">
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">ID</span>
                             <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="ID">
                         </div>
 
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Создать диапазон
-                    </div>
-                    <div class="panel-body">
+                    </li>
+                    <li class="list-group-item list-group-item-info">
+                        <b>Создать диапазон</b>
+                    </li>
+                    <li class="list-group-item">
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">От</span>
                             <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="from1">
@@ -75,33 +70,36 @@
                             <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="to">
                         </div>
 
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Создать несколько
-                    </div>
-                    <div class="panel-body">
+                    </li>
+                    <li class="list-group-item list-group-item-info">
+                        <b>Создать несколько</b>
+                    </li>
+                    <li class="list-group-item">
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">C</span>
                             <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="from2">
                         </div>
-
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">Кол-во</span>
                             <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="count">
                         </div>
-                        <br>
-                        <button class="pull-left btn btn-default" id="create_certs" data-toggle="collapse" data-target="#create_certs_hided_menu">Отмена</button>
-                        <button class="pull-right btn btn-primary" id="create_certs">Сохранить</button>
-                    </div>
-                </div>
+                    </li>
+                    <li class="list-group-item">
+                        <button class="btn btn-default" data-toggle="collapse" data-target="#create_certs_hided_menu">Отмена</button>
+                        <div class="pull-right">
+                            <button class="btn btn-primary" id="create_certs">Сохранить</button>
+                        </div>
+                    </li>
+                </ul>
             </div>
+
+
+
 
 
             <!-- News block -->
             <div class="panel panel-default">
-                <div class="panel-heading">Новости</div>
+                <div class="panel-heading"><b>Новости</b></div>
                 <div class="panel-body">
                     <!-- Twitter block -->
                     <a class="twitter-timeline"  href="https://twitter.com/hashtag/rosaviator_news" data-widget-id="759073961271500800">Твиты о #rosaviator_news</a>
