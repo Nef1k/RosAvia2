@@ -78,7 +78,7 @@ class DealerController extends Controller
         $ready_certs = [];
         $em = $this->getDoctrine()->getManager();
         /** @var  $em EntityManager */
-        $certs = $em->getRepository("AppBundle:Sertificate")->findBy(array('ID_User' => $user, 'ID_SertState' => 0));
+        $certs = $em->getRepository("AppBundle:Sertificate")->findBy(array('ID_User' => $user, 'ID_SertState' => 8  ));
         foreach ($certs as $cert){
             /**  @var $cert Sertificate*/
             $cert_info_array = [];
