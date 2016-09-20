@@ -87,14 +87,11 @@
                     <li class="list-group-item">
                         <button class="btn btn-default" data-toggle="collapse" data-target="#create_certs_hided_menu">Отмена</button>
                         <div class="pull-right">
-                            <button class="btn btn-primary" id="create_certs">Сохранить</button>
+                            <button class="btn btn-primary" id="create_certs">Создать</button>
                         </div>
                     </li>
                 </ul>
             </div>
-
-
-
 
 
             <!-- News block -->
@@ -120,6 +117,6 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script src="{{ asset("js/admin_script.js") }}" type="application/javascript"></script>
     <script src="{{ asset("js/get_user_info.js") }}" type="application/javascript"></script>
-    <!--<script src="{{ asset("js/get_user_cert_info.js") }}" type="application/javascript"></script>-->
 {% endblock %}
