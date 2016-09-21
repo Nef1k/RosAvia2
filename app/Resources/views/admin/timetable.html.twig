@@ -1,0 +1,34 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset(fc/fullcalendar.css) }}">
+<link rel="stylesheet" href="{{ asset(fc/fullcalendar.print.css) }}" media="print">
+<link rel="stylesheet" href="{{ asset(css/style1.css) }}">
+{% endblock %}
+
+{% block body %}
+    {% include "default/navigation.html.twig" %}
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="myModal">
+        {% include "admin/modal/time_table_modal.html.twig" %}
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Расписание полетов</h1>
+            <button class="pull-right btn btn-lg btn-default" href="">Панель администратора</button>
+            <div class="col-md-12" id="calendar">
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset("fc/lib/moment.min.js") }}" type="application/javascript"></script>
+    <script src="{{ asset("fc/fullcalendar.js") }}" type="application/javascript"></script>
+    <script src="{{ asset("fc/locale/ru.js") }}" type="application/javascript"></script>
+    <script src="{{ asset("js/create_calendar.js") }}" type="application/javascript"></script>
+{% endblock %}
