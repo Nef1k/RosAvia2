@@ -370,4 +370,14 @@ class AdminController extends Controller{
         return $response;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     *
+     * @Route("/admin/timetable", name="admin_timetable")
+     */
+    public function showTimetableAction(Request $request){
+        return $this->render("admin/timetable.html.twig");
+    }
+
 }
