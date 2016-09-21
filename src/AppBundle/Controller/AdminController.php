@@ -390,7 +390,7 @@ class AdminController extends Controller{
      * @Method("GET")
      */
     public function showDaySheduleAction(Request $request){
-        $date = strtotime($request->query->get(''));
+        $date = strtotime($request->query->get('date'));
         $sql = "
             SELECT
                 Sertificate.ID_Sertificate AS 'id',
