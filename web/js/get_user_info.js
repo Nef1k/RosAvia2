@@ -58,6 +58,7 @@ function attachBtnClick(event){
     //Clearing up previous certificates
     $(".certificate-row").remove();
     $(".unatt_btn").remove();
+   // $(".attach-helper").remove();
 
     var loader = appendLoaderInTable("#certificates-table", 2);
     var certificates_loader = appendLoaderGif("#unattached_certs");
@@ -97,6 +98,8 @@ function attachBtnClick(event){
     });
 }
 
+
+
 $(document).ready(function(e){
     var certificates_to_attach = [];
 
@@ -105,5 +108,61 @@ $(document).ready(function(e){
         fillUserTableWithData("#user_table tr:last", data);
 
         $(".attach-certificate-btn").click(attachBtnClick);
+    });
+
+    $("#addBtn").click(function() {
+        var formValid = true;
+        var arr = [];
+        var i = -1;
+
+        $('.attach-helper').each(function(event) {
+            var input_data = $(this).val();
+            i++;
+            arr[i] = input_data;
+            if (input_data="") {
+                arr[i] = -1;
+            }
+            else {
+                if (isNaN(input_data) || input_data<0)  {
+                    formValid = false;
+                }
+            }
+        });
+        if (formValid) {
+            console.log(arr);
+            if (arr[0]>0){
+                $("#certificates-table tr:last").after(
+                    "<tr class='certificate-row'>" +
+                    "<td>" + arr[0] + "</td>" +
+                    "<td>Непривязанный</td>" +
+                    "</tr>"
+                );
+            }
+            if (arr[1]>0 && arr[2]>0 && arr[2]>arr[1]){
+                for (var j = arr[1]; j<=arr[2]; j++){
+                    $("#certificates-table tr:last").after(
+                        "<tr class='certificate-row'>" +
+                        "<td>" + j + "</td>" +
+                        "<td>Непривязанный</td>" +
+                        "</tr>"
+                    );
+                }
+            }
+            if (arr[3]>0 && arr[4]>0) {
+                console.log(arr[3]+arr[4]);
+                for (var k = arr[3]; k <= parseFloat(arr[3])+parseFloat(arr[4])-1; k++){
+                    console.log(k);
+                    $("#certificates-table tr:last").after(
+                        "<tr class='certificate-row'>" +
+                        "<td>" + k + "</td>" +
+                        "<td>Непривязанный</td>" +
+                        "</tr>"
+                    );
+                }
+            }
+        }
+        else {
+            alert("Ошибка ввода, повторите ввод")
+        }
     });
 });

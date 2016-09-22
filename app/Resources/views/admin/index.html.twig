@@ -5,9 +5,11 @@
 
     <div class="row">
         <!-- Title -->
-        <div class="col-md-12">
+        <div class="col-md-10">
             <h1>Панель администратора</h1>
         </div>
+        <div class="col-md-2">
+<button class="btn btn-lg btn-default"><a href="{{ path("admin_timetable") }}">Календарь полетов</a></button>        </div>
 
         <!-- Table with users -->
         <div class="col-md-9">
@@ -34,20 +36,69 @@
         <div class="col-md-3">
             <!-- Certificates control panel -->
             <div class="panel panel-default">
-                <div class="panel-heading">Сертификаты</div>
+                <div class="panel-heading"><b>Сертификаты</b></div>
                 <div class="panel-body">
-                            <div class="pull-left">
-                                Доступно:&nbsp;<span id="unattached_certs_count" >%counter%</span>
-                            </div>
-                            <div class="pull-right">
-                                <button class="btn btn-xs btn-default"><b>Создать</b></button>
-                            </div>
+                    <div class="pull-left">
+                        Доступно:&nbsp;<span id="unattached_certs_count" >%counter%</span>
+                    </div>
+                    <div class="pull-right">
+                        <button class="btn btn-xs btn-default" data-toggle="collapse" data-target="#create_certs_hided_menu"><b>Создать</b></button>
+                    </div>
                 </div>
+
+                <!--Certificates creating hided menu-->
+                <ul id="create_certs_hided_menu" class="collapse list-group">
+                    <li class="list-group-item list-group-item-info">
+                        <b>Создать один</b>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">ID</span>
+                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="ID_Certificate">
+                        </div>
+
+                    </li>
+                    <li class="list-group-item list-group-item-info">
+                        <b>Создать диапазон</b>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">От</span>
+                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="range_from">
+                        </div>
+
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">До</span>
+                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="range_to">
+                        </div>
+
+                    </li>
+                    <li class="list-group-item list-group-item-info">
+                        <b>Создать несколько</b>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">C</span>
+                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="amount_from">
+                        </div>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">Кол-во</span>
+                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="amount_count">
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <button class="btn btn-default" data-toggle="collapse" data-target="#create_certs_hided_menu">Отмена</button>
+                        <div class="pull-right">
+                            <button class="btn btn-primary" id="create_certs">Создать</button>
+                        </div>
+                    </li>
+                </ul>
             </div>
+
 
             <!-- News block -->
             <div class="panel panel-default">
-                <div class="panel-heading">Новости</div>
+                <div class="panel-heading"><b>Новости</b></div>
                 <div class="panel-body">
                     <!-- Twitter block -->
                     <a class="twitter-timeline"  href="https://twitter.com/hashtag/rosaviator_news" data-widget-id="759073961271500800">Твиты о #rosaviator_news</a>
@@ -61,9 +112,14 @@
     <div class="modal fade" id="attach-certificate-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         {% include "admin/modal/certificate_attach_modal.html.twig" %}
     </div>
+
+    <div class="modal fade" id="create-certificates-modal" tabindex="-1" role="dialog">
+        {% include "admin/modal/certificate_create_modal.html.twig" %}
+    </div>
 {% endblock %}
 
 {% block javascripts %}
+    <script src="{{ asset("js/modals/YesNoDialog.js") }}" type="application/javascript"></script>
+    <script src="{{ asset("js/admin_script.js") }}" type="application/javascript"></script>
     <script src="{{ asset("js/get_user_info.js") }}" type="application/javascript"></script>
-    <!--<script src="{{ asset("js/get_user_cert_info.js") }}" type="application/javascript"></script>-->
 {% endblock %}
