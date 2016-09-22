@@ -427,4 +427,17 @@ class AdminController extends Controller{
         return $response;
     }
 
+
+    /**
+     * @param Request $request
+     * @return Response
+     *
+     * @Route("/admin/cert_edit", name = "cert_edit")
+     *
+     * @Method("POST")
+     */
+    public function EditCertAction(Request $request){
+
+    }
+
 }
