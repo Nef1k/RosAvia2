@@ -1,33 +1,41 @@
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
             <h4 class="modal-title">Расписание на <span id="chosen_date">%date%</span></h4>
         </div>
         <div class="modal-body">
             <div class="row">
-            <div class="col-md-9">
-                <table class="table table-stripped" id="time_table">
-                    <tr>
-                        <th class="col-md-1">Время</th>
-                        <th class="col-md-11">Список планируемых полетов</th>
-                    </tr>
-                    <tr id="13">
-                        <td class="text-center day-loader hidden" colspan="2">
-                            <img src="{{ asset("img/ring-alt.gif") }}" alt="Загрузка..." width="40" height="40">
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="col-md-3">
-                            <h4>Номер сертификата</h4>
-                <div class="input-group">
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Go!</button>
-      </span>
-                    <input type="text" class="form-control" placeholder="Search for...">
+                <div class="col-md-9">
+                    <table class="table table-bordered" id="time_table">
+                        <tr>
+                            <th class="col-md-1">Время</th>
+                            <th class="col-md-11">Список планируемых полетов</th>
+                        </tr>
+                        <tr class="day-loader hidden">
+                            <td class="text-center" colspan="2">
+                                <img src="{{ asset("img/ring-alt.gif") }}" alt="Загрузка..." width="40" height="40">
+                            </td>
+                        </tr>
+                        <tr class="day-empty hidden">
+                            <td colspan="2">
+                                На данный день нет записанных сертификатов
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-            </div>
+
+                <div class="col-md-3">
+                    <h4>Номер сертификата</h4>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                        <input type="text" class="form-control" placeholder="Search for...">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="modal-footer">

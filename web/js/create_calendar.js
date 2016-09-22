@@ -4,13 +4,15 @@
 function showModal(date){
     $("#chosen_date").html(date.format("DD.MM.YYYY"));
     $("#myModal").modal("show");
+    $(".day-empty").addClass("hidden");
+
     var chosen_date = date.unix();
     getTimeTableData(chosen_date);
 }
 function fillTimeTableWithData(table_selector, data){
     console.log(data);
 
-    if (data.length > 0) {
+    if (Object.keys(data).length > 0) {
         for (var hour in data) {
             if (!data.hasOwnProperty(hour)) {
                 continue;
@@ -20,6 +22,18 @@ function fillTimeTableWithData(table_selector, data){
 
             if (certificates_in_hour.length != 0) {
                 //console.log($(table_selector + " tr:last"))
+                $(table_selector).append(
+                    "<tr>" +
+                    "   <td>" + hour + ":00</td>" +
+                    "   <td><span class='certificates-in-hour-" + hour + "'>Some shit goes here</span></td>" +
+                    "</tr>"
+                );
+
+                certificates_in_hour.forEach(function(index, i, arr){
+                    $(table_selector + " .certificates-in-hour-"+hour).append(
+                        
+                    );
+                });
                 /*$(table_selector + " tr:last").after(
                  "<tr>" +
                  "   <td>" + hour + ":00</td>" +
@@ -38,11 +52,7 @@ function fillTimeTableWithData(table_selector, data){
         }
     }
     else {
-        $(table_selector + " tr:last").append(
-            "<tr>" +
-            "   <td colspan=\"2\">На данный день нет записанных сертификатов</td>" +
-            "</tr>"
-        )
+        $(table_selector + " .day-empty").removeClass("hidden");
     }
 }
 function getTimeTableData(date){
