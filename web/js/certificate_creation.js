@@ -119,4 +119,3 @@ function createBtnClick(){
 $(document).ready(function(event){
     $("#create_certs").click(createBtnClick);
 });
-
