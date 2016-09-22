@@ -390,12 +390,12 @@ class AdminController extends Controller{
      * @Method("GET")
      */
     public function showDayScheduleAction(Request $request){
-        $date = strtotime($request->query->get('date'));
+        $date = $request->query->get('date');
         $sql = "
             SELECT
                 sertificate.ID_Sertificate AS 'id',
                 flight_type.name AS 'flight_type',
-                DATEPART(hh,Sertificate.use_time) AS 'hour'
+                Sertificate.use_time 
             FROM
                 sertificate
             LEFT JOIN
@@ -403,22 +403,29 @@ class AdminController extends Controller{
             ON
                 flight_type.ID_FlightType = sertificate.ID_FlightType
             WHERE
-                (DATEPART(year, Sertificate.use_time) = DATEPART(year,:userDate)) AND 
-                (DATEPART(day, Sertificate.use_time) = DATEPART(day, :userDate)) AND 
-                (DATEPART(month, Sertificate.use_time) = DATEPART(month, :userDate))";
+                (YEAR(Sertificate.use_time) = YEAR(FROM_UNIXTIME(:user_date))) AND
+                (MONTH(Sertificate.use_time) = MONTH(FROM_UNIXTIME(:user_date))) AND
+                (DAY(Sertificate.use_time) = DAY(FROM_UNIXTIME(:user_date)))
+            ORDER BY
+                Sertificate.use_time";
         $query = $this->getDoctrine()->getConnection()->prepare($sql);
-        $query->execute(array('userDate' => $date));
+        $query->execute(array('user_date' => $date));
         $certs = $query->fetchAll();
+        dump($certs);
         $cert_list = [];
         foreach($certs AS $cert){
-            $cert_info = [];
-            $cert_info['id'] = $cert['id'];
-            $cert_info['flight_type'] = $cert['flight_type'];
-            array_push($cert_list[$cert['hour']],$cert_info);
+            $hour = date("G", strtotime($cert['use_time']));
+
+            if (!isset($cert_list[$hour])){
+                $cert_list[$hour] = [];
+                dump("Added hour #".$hour);
+            }
+
+            array_push($cert_list[$hour], $cert);
         }
         $response = new Response;
-        $response->setContent(json_encode($cert_list));
-        $response->headers->set('Content-Type', 'application/json');
+        $response->setContent("<html><body>".json_encode($cert_list)."</body></html>");
+        //$response->headers->set('Content-Type', 'application/json');
         return $response;
     }
 
