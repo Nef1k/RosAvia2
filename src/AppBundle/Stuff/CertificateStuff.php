@@ -318,8 +318,11 @@ class CertificateStuff
 
     /**
      * @param int $id
-     * @param array $field_name
-     * @param array $field_value
+     * @param array $field_names
+     * @param array $field_values
+     * @internal param array $field_name
+     * @internal param array $field_value
+     * @return Sertificate
      */
     public function CertEdition($id, array $field_names, array $field_values){
         /** @var  $cert Sertificate*/
@@ -337,8 +340,17 @@ class CertificateStuff
             $flight_type = $this->em->getRepository("AppBundle:FlightType")->find($field_values[array_search("id_flight_type", $field_names)]);
             $cert->setFlightType($flight_type);
         }
-        if (in_array("",$field_names)){
-            $cert->$field_values[array_search("", $field_names)]);
+        if (in_array("id_sert_state",$field_names)){
+            $cert_state = $this->em->getRepository("AppBundle:SertState")->find($field_values[array_search("id_sert_state", $field_names)]);
+            $cert->setSertState($cert_state);
         }
+        if (in_array("use_time",$field_names)){
+            $cert->setUseTime($field_values[array_search("use_time", $field_names)]);
+        }
+        if (in_array("user_id",$field_names)){
+            $user = $this->em->getRepository("AppBundle:User")->find($field_values[array_search("user_id",$field_names)]);
+            $cert->setUser($user);
+        }
+        return $cert;
     }
 }
