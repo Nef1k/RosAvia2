@@ -384,11 +384,11 @@ class AdminController extends Controller{
      * @param Request $request
      * @return Response
      *
-     * @Route("/admin/show_day_shedule", name = "admin_show_day_shedule")
+     * @Route("/admin/show_day_schedule", name = "admin_show_day_schedule")
      *
      * @Method("GET")
      */
-    public function showDaySheduleAction(Request $request){
+    public function showDayScheduleAction(Request $request){
         $date = strtotime($request->query->get('date'));
         $sql = "
             SELECT
