@@ -4,7 +4,7 @@
 function showModal(date){
     $("#chosen_date").html(date.format("DD.MM.YYYY"));
     $("#myModal").modal("show");
-    var chosen_date = Date.UTC(date.format("YYYY MM DD"));
+    var chosen_date = UTC(date);
     getTimeTableData(chosen_date);
 }
 function fillTimeTableWithData(table_selector, data){
