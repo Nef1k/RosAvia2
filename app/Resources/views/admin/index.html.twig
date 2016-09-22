@@ -5,12 +5,16 @@
 
     <div class="row">
         <!-- Title -->
-        <div class="col-md-10">
-            <h1>Панель администратора</h1>
+        <div class="col-md-5">
+            <h1>Панель администратора </h1>
         </div>
-        <div class="col-md-2">
-<button class="btn btn-lg btn-default"><a href="{{ path("admin_timetable") }}">Календарь полетов</a></button>        </div>
+        <div class="col-md-4">
+            <h1 align="right"><a href="{{ path("admin_timetable") }}">Календарь полетов</a></h1>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
 
+    <div class="row">
         <!-- Table with users -->
         <div class="col-md-9">
             <table class="table table-striped" id="user_table">
