@@ -345,7 +345,7 @@ class CertificateStuff
             $cert->setSertState($cert_state);
         }
         if (in_array("use_time",$field_names)){
-            $cert->setUseTime($field_values[array_search("use_time", $field_names)]);
+            $cert->setUseTime(strtotime($field_values[array_search("use_time", $field_names)]));
         }
         if (in_array("user_id",$field_names)){
             $user = $this->em->getRepository("AppBundle:User")->find($field_values[array_search("user_id",$field_names)]);

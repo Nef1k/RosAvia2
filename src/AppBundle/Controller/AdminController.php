@@ -7,11 +7,13 @@
  */
 namespace AppBundle\Controller;
 
+use AppBundle\Stuff\CertificateStuff;
+use AppBundle\DataClasses\CertEdition;
 use AppBundle\DataClasses\UserEdition;
-use AppBundle\Entity\User;
 use AppBundle\DataClasses\UserIDCheck;
 use AppBundle\DataClasses\CertCreation;
 use AppBundle\DataClasses\CertAttachment;
+use AppBundle\Entity\User;
 use AppBundle\Entity\GroupParam;
 use AppBundle\Entity\ParamValue;
 use AppBundle\Entity\Sertificate;
@@ -437,7 +439,36 @@ class AdminController extends Controller{
      * @Method("POST")
      */
     public function EditCertAction(Request $request){
+        
+        $cert_edition = new CertEdition();
+        $cert_edition->setCertId($request->query->get('cert_id'))->setTime($request->query->get('date'));
 
+        $Request_output = array(
+            'error_msg' => array(),
+            'error_param' => array()
+        );
+
+        $validator = $this->get('validator');
+        $errors = $validator->validate($cert_edition);
+        foreach($errors as $error){
+            array_push($Request_output['error_msg'],$error->getMessage());
+            array_push($Request_output['error_param'],$error->getInvalidValue());
+        }
+        
+        if(count($errors) == 0){
+            /** @var $certificate_stuff CertificateStuff */
+            $cert_stuff = $this->get("app.certificate_stuff");
+            $cert = $cert_stuff->CertEdition($cert_edition->getCertId(), array("use_time"), array($cert_edition->getTime()));
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($cert);
+            $em->flush();
+            array_push($Request_output, 'success');
+        }
+
+        $response = new Response();
+        $response->setContent(json_encode($Request_output));
+        $response -> headers -> set('Content-Type', 'application/json');
+        return $response;
     }
 
 }
