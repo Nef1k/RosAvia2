@@ -411,21 +411,19 @@ class AdminController extends Controller{
         $query = $this->getDoctrine()->getConnection()->prepare($sql);
         $query->execute(array('user_date' => $date));
         $certs = $query->fetchAll();
-        dump($certs);
         $cert_list = [];
         foreach($certs AS $cert){
             $hour = date("G", strtotime($cert['use_time']));
 
             if (!isset($cert_list[$hour])){
                 $cert_list[$hour] = [];
-                dump("Added hour #".$hour);
             }
 
             array_push($cert_list[$hour], $cert);
         }
         $response = new Response;
         $response->setContent("<html><body>".json_encode($cert_list)."</body></html>");
-        //$response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
 
