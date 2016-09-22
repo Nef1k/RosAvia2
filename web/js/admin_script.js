@@ -15,32 +15,38 @@ function createModalYesBtn(event) {
     yesNoDialog.close();
 }
 
-function getCertificateListCaption(event){
-
-}
-
-function getCertificatesCaption(event){
-    var modal = $(this);
-
-
-}
-
 function isInvalid(value){
     return isNaN(value) || value == "";
+}
+
+function generateRange(from, to){
+    var result = [];
+    for (var i = from; i <= to; i++){
+        result.push(i);
+    }
+
+    return result;
+}
+function generateAmount(offset, count){
+    var result = [];
+
+    for (var i = offset; i <= offset + count - 1; i++){
+        result.push(i);
+    }
+
+    return result;
 }
 
 function parseCertificateList(){
     var ID_Certificate = $("[name='ID_Certificate']").val();
     var range = {
-        from: $("[name='range_from']").val(),
-        to: $("[name='range_to']").val()
+        from: parseInt($("[name='range_from']").val()),
+        to: parseInt($("[name='range_to']").val())
     };
     var amount = {
-        from: $("[name='amount_from']").val(),
-        count: $("[name='amount_count']").val()
+        from: parseInt($("[name='amount_from']").val()),
+        count: parseInt($("[name='amount_count']").val())
     };
-
-    console.log(isInvalid(ID_Certificate));
 
     if (!isInvalid(ID_Certificate)){
         return {
@@ -52,28 +58,30 @@ function parseCertificateList(){
     if (!isInvalid(range.from) && !isInvalid(range.to)){
         return {
             "type": "range",
-            "certificates": Array(range.to - range.from + 1).map(function(value, index, certificates){
-                return range.from + index;
-            })
+            "certificates": generateRange(range.from, range.to)
         }
     }
 
     if (!isInvalid(amount.from) && !isInvalid(amount.count)){
         return {
             "type": "amount",
-            "certificates": Array(amount.count).map(function(value, index, certificates){
-                return amount.from + index;
-            })
+            "certificates": generateAmount(amount.from, amount.count)
         };
     }
 }
 
 function createBtnClick(){
-    console.log(parseCertificateList().certificates);
+    var userInput = parseCertificateList();
+    var certificateListStr = (userInput) ? userInput.certificates.join(", ") : "undefined";
+
+    var msg = (userInput) ?
+        "Будут созданы сертификаты со следующими ID: <code>"+ certificateListStr +"</code>. Вы уверены?" :
+        "Неправильно заполнены поля";
+
     yesNoDialog.setModalSelector("#yes-no-modal");
     yesNoDialog.show({
         caption: "Создание сертификатов",
-        message: "Будут созданы сертификаты %certificates%. Вы уверены?",
+        message: msg,
 
         yes_caption: "Да",
         no_caption: "Нет",
