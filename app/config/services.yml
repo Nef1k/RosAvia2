@@ -31,10 +31,10 @@ services:
 
      #Validators
      validator.inputValidator:
-              class: AppBundle\Validator\Constraints\InputConstraintValidator
-              arguments: ["@doctrine.orm.entity_manager"]
-              tags:
-                  - { name: validator.constraint_validator }
+         class: AppBundle\Validator\Constraints\InputConstraintValidator
+         arguments: ["@doctrine.orm.entity_manager"]
+         tags:
+             - { name: validator.constraint_validator }
      validator.CheckUserIDValidator:
          class: AppBundle\Validator\Constraints\CheckUserIDValidator
          arguments: ["@doctrine.orm.entity_manager"]
