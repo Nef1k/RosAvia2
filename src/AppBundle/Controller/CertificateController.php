@@ -188,7 +188,7 @@ class CertificateController extends Controller
     /**
      * @param Request $request
      * @return Response
-     * @Route("/certificate/get_cert_list", name = "get_cert_list")
+     * @Route("/certificate/select", name = "get_cert_list")
      * @Method("GET")
      */
     public function certSelect(Request $request){
