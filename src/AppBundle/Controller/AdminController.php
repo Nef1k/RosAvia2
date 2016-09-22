@@ -150,10 +150,12 @@ class AdminController extends Controller{
         if(count($errors) == 0) {
             /** @var $userAttachTo User */
             $userAttachTo = $this->getDoctrine()->getRepository("AppBundle:User")->find($attachInfo->getUserId());
+            /** @var  $certState SertState*/
+            $certState = $this->getDoctrine()->getRepository("AppBundle:SertState")->find(1);
             foreach($attachInfo->getCertIds() as $cert_id){
                 /** @var  $cert Sertificate*/
                 $cert = $em->getRepository("AppBundle:Sertificate")->find($cert_id);
-                $cert->setIDUser($userAttachTo);
+                $cert->setIDUser($userAttachTo)->setIDSertState($certState);
                 $em->persist($cert);
             }
             $em->flush();
@@ -326,7 +328,6 @@ class AdminController extends Controller{
     public function insertUserParams(Request $request){
         $user_id = new UserIDCheck();
         $user_id->setUserID($request->query->get('user_id'));
-        $response = new Response();
         $em = $this->getDoctrine()->getManager();
         /** @var  $em EntityManager */
         $validator = $this->get('validator');
@@ -394,17 +395,17 @@ class AdminController extends Controller{
             SELECT
                 Sertificate.ID_Sertificate AS 'id',
                 FlightType.name AS 'flight_type',
-                DATEPART(hh,Sertificate.date) AS 'hour'
+                DATEPART(hh,Sertificate.use_time) AS 'hour'
             FROM
-                Sertificate
+                sertificate
             LEFT JOIN
-                FlightType
+                flight_type
             ON
                 FlightType.ID_FlightType = Sertificate.ID_FlightType
             WHERE
-                (DATEPART(year, Sertificate.date) = DATEPART(year,:userDate)) AND 
-                (DATEPART(day, Sertificate.date) = DATEPART(day, :userDate)) AND 
-                (DATEPART(month, Sertificate.date) = DATEPART(month, :userDate))";
+                (DATEPART(year, Sertificate.use_time) = DATEPART(year,:userDate)) AND 
+                (DATEPART(day, Sertificate.use_time) = DATEPART(day, :userDate)) AND 
+                (DATEPART(month, Sertificate.use_time) = DATEPART(month, :userDate))";
         $query = $this->getDoctrine()->getConnection()->prepare($sql);
         $query->execute(array('userDate' => $date));
         $certs = $query->fetchAll();

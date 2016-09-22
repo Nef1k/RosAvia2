@@ -315,4 +315,30 @@ class CertificateStuff
 
         return $certificates;
     }
+
+    /**
+     * @param int $id
+     * @param array $field_name
+     * @param array $field_value
+     */
+    public function CertEdition($id, array $field_names, array $field_values){
+        /** @var  $cert Sertificate*/
+        $cert = $this->em->getRepository("AppBundle:Sertificate")->find($id);
+        if (in_array("name",$field_names)){
+            $cert->setName($field_values[array_search("name", $field_names)]);
+        }
+        if (in_array("last_name",$field_names)){
+            $cert->setLastName($field_values[array_search("last_name", $field_names)]);
+        }
+        if (in_array("phone_number",$field_names)){
+            $cert->setPhoneNumber($field_values[array_search("phone_number", $field_names)]);
+        }
+        if (in_array("id_flight_type",$field_names)){
+            $flight_type = $this->em->getRepository("AppBundle:FlightType")->find($field_values[array_search("id_flight_type", $field_names)]);
+            $cert->setFlightType($flight_type);
+        }
+        if (in_array("",$field_names)){
+            $cert->$field_values[array_search("", $field_names)]);
+        }
+    }
 }
