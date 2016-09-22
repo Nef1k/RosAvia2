@@ -380,4 +380,46 @@ class AdminController extends Controller{
         return $this->render("admin/timetable.html.twig");
     }
 
+
+    /**
+     * @param Request $request
+     * @return Response
+     *
+     * @Route("/admin/show_day_shedule", name = "admin_show_day_shedule")
+     *
+     * @Method("GET")
+     */
+    public function showDaySheduleAction(Request $request){
+        $date = strtotime($request->query->get('date'));
+        $sql = "
+            SELECT
+                Sertificate.ID_Sertificate AS 'id',
+                FlightType.name AS 'flight_type',
+                DATEPART(hh,Sertificate.date) AS 'hour'
+            FROM
+                Sertificate
+            LEFT JOIN
+                FlightType
+            ON
+                FlightType.ID_FlightType = Sertificate.ID_FlightType
+            WHERE
+                (DATEPART(year, Sertificate.date) = DATEPART(year,:userDate)) AND 
+                (DATEPART(day, Sertificate.date) = DATEPART(day, :userDate)) AND 
+                (DATEPART(month, Sertificate.date) = DATEPART(month, :userDate))";
+        $query = $this->getDoctrine()->getConnection()->prepare($sql);
+        $query->execute(array('userDate' => $date));
+        $certs = $query->fetchAll();
+        $cert_list = [];
+        foreach($certs AS $cert){
+            $cert_info = [];
+            $cert_info['id'] = $cert['id'];
+            $cert_info['flight_type'] = $cert['flight_type'];
+            array_push($cert_list[$cert['hour']],$cert_info);
+        }
+        $response = new Response;
+        $response->setContent(json_encode($cert_list));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+
 }
