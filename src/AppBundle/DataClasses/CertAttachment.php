@@ -25,6 +25,7 @@ class CertAttachment
      * })
      * @Assert\NotNull(message = "Значение не может быть нулевым")
      * @MyAssert\CheckCertsExist()
+     * @MyAssert\CheckCertState()
      * 
      */
     
