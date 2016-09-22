@@ -155,8 +155,8 @@ class AdminController extends Controller{
                 $cert = $em->getRepository("AppBundle:Sertificate")->find($cert_id);
                 $cert->setIDUser($userAttachTo);
                 $em->persist($cert);
-                $em->flush();
             }
+            $em->flush();
             array_push($Request_output, 'success');
         }
         foreach($errors as $error){
@@ -195,8 +195,9 @@ class AdminController extends Controller{
                     setIDSertificate($cert_id)->
                     setIDSertState($cert_state)->
                     setIDUser($user);
-                $em->flush($cert);
+                $em->persist($cert);
             }
+            $em->flush();
             array_push($Request_output, 'success');
         }
         foreach($errors as $error){
