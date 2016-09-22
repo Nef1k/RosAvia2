@@ -167,7 +167,7 @@ class CertificateController extends Controller
      * @return Response
      *
      * @Route("certificates/", name="certificates_group_processing")
-     * @Method({"POST"})
+     * @Method("POST")
      */
     public function groupProcessingAction(Request $request)
     {
@@ -182,5 +182,21 @@ class CertificateController extends Controller
         }
 
         return new Response("<html><head><title>Stuff</title><body>To be redirected</body></html>");//$this->redirectToRoute("homepage");
+    }
+
+
+    /**
+     * @param Request $request
+     * @return Response
+     * @Route("/certificate/get_cert_list", name = "get_cert_list")
+     * @Method("GET")
+     */
+    public function certSelect(Request $request){
+        $response = new Response();
+        /** @var $certificate_stuff CertificateStuff */
+        $cert_stuff = $this->get("app.certificate_stuff");
+        $response->setContent(json_encode($cert_stuff->GetCertArrayFromRequest($request)));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 }

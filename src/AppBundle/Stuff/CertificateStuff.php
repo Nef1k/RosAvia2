@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Internal\Hydration\HydrationException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-
+use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Sertificate;
 
@@ -340,8 +340,8 @@ class CertificateStuff
             $flight_type = $this->em->getRepository("AppBundle:FlightType")->find($field_values[array_search("id_flight_type", $field_names)]);
             $cert->setFlightType($flight_type);
         }
-        if (in_array("id_sert_state",$field_names)){
-            $cert_state = $this->em->getRepository("AppBundle:SertState")->find($field_values[array_search("id_sert_state", $field_names)]);
+        if (in_array("id_cert_state",$field_names)){
+            $cert_state = $this->em->getRepository("AppBundle:SertState")->find($field_values[array_search("id_cert_state", $field_names)]);
             $cert->setSertState($cert_state);
         }
         if (in_array("use_time",$field_names)){
@@ -351,6 +351,70 @@ class CertificateStuff
             $user = $this->em->getRepository("AppBundle:User")->find($field_values[array_search("user_id",$field_names)]);
             $cert->setUser($user);
         }
+        return $cert;
+    }
+
+    /**
+     * @param Sertificate $cert
+     * @param array $fields
+     * @return array
+     */
+    public function CertToArray(Sertificate $cert, array $fields){
+        $cert_info = [];
+        if (in_array("name", $fields)){
+            $cert_info["name"] = $cert->getName();
+        }
+        if (in_array("last_name", $fields)){
+            $cert_info["last_name"] = $cert->getLastName();
+        }
+        if (in_array("phone_number", $fields)){
+            $cert_info["phone_number"] = $cert->getPhoneNumber();
+        }
+        if (in_array("flight_type", $fields)){
+            $cert_info["flight_type"] = $cert->getFlightType()->getName();
+        }
+        if (in_array("cert_state", $fields)){
+            $cert_info["cert__state"] = $cert->getSertState()->getName();
+        }
+        if (in_array("use_time", $fields)){
+            $cert_info["use_time"] = $cert->getUseTime();
+        }
+        if (in_array("user_id", $fields)){
+            $cert_info["user_id"] = $cert->getUser()->getIDUser();
+        }
+        return $cert_info;
+    }
+
+    /**
+     * @param array $criteria
+     * @param array $sort
+     * @param array $fields
+     * @return array
+     */
+    public function GetCertArray(array $criteria, array $sort, array $fields){
+        $certs = $this->em->getRepository("AppBundle:Sertificate")->findBy($criteria, $sort);
+        $cert_list = [];
+        if ($certs != null){
+            foreach($certs AS $cert){
+                $cert_info = $this->CertToArray($cert, $fields);
+                array_push($cert_list, $cert_info);
+            }
+        }
+        return $cert_list;
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function GetCertArrayFromRequest(Request $request){
+        $criteria = $request->query->get('criteria');
+        $fields = $request->query->get('fields');
+        $sort = $request->query->get('sort');
+        if ($sort == null) $sort = [];
+        if ($criteria == null) $criteria = [];
+        if ($fields == null) $fields = [];
+        $cert = $this->GetCertArray($criteria, $sort, $fields);
         return $cert;
     }
 }
