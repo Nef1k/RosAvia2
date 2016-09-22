@@ -382,6 +382,9 @@ class CertificateStuff
         if (in_array("user_id", $fields)){
             $cert_info["user_id"] = $cert->getUser()->getIDUser();
         }
+        if (in_array("ID_Sertificate", $fields)){
+            $cert_info["ID_Sertificate"] = $cert->getIDSertificate();
+        }
         return $cert_info;
     }
 
@@ -403,12 +406,25 @@ class CertificateStuff
         return $cert_list;
     }
 
+    public function objectConvert($object){
+        $criteria = [];
+        if ((isset($object["ID_Sertificate"])?$object["ID_Sertificate"]:null) != null) array_push($criteria["ID_Sertificate"],$object["ID_Sertificate"]);
+        if ((isset($object["name"])?$object["name"]:null) != null) $criteria["name"] = $object["name"];
+        if ((isset($object["last_name"])?$object["last_name"]:null) != null) $criteria["last_name"] = $object["last_name"];
+        if ((isset($object["phone_number"])?$object["phone_number"]:null) != null) $criteria["phone_number"] = $object["phone_number"];
+        if ((isset($object["use_time"])?$object["use_time"]:null) != null) $criteria["use_time"] = strtotime($object["use_time"]);
+        if ((isset($object["ID_FlightType"])?$object["ID_FlightType"]:null) != null) $criteria["ID_FlightType"] = $this->em->getRepository("AppBundle:FlightType")->find($object["ID_FlightType"]);
+        if ((isset($object["ID_SertState"])?$object["ID_SertState"]:null) != null) $criteria["ID_SertState"] = $this->em->getRepository("AppBundle:SertState")->find($object["ID_SertState"]);
+        if ((isset($object["ID_User"])?$object["ID_User"]:null) != null) $criteria["ID_User"] = $this->em->getRepository("AppBundle:User")->find($object["ID_User"]);
+        return $criteria;
+    }
+
     /**
      * @param Request $request
      * @return array
      */
     public function GetCertArrayFromRequest(Request $request){
-        $criteria = (array) json_decode($request->request->get('criteria'));
+        $criteria = $this->objectConvert((array)json_decode($request->request->get('criteria')));
         $fields = json_decode($request->request->get('fields'));
         $sort = json_decode($request->request->get('sort'));
         if ($sort == null) $sort = [];
