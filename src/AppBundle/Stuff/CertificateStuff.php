@@ -408,9 +408,9 @@ class CertificateStuff
      * @return array
      */
     public function GetCertArrayFromRequest(Request $request){
-        $criteria = $request->query->get('criteria');
-        $fields = $request->query->get('fields');
-        $sort = $request->query->get('sort');
+        $criteria = (array) json_decode($request->request->get('criteria'));
+        $fields = json_decode($request->request->get('fields'));
+        $sort = json_decode($request->request->get('sort'));
         if ($sort == null) $sort = [];
         if ($criteria == null) $criteria = [];
         if ($fields == null) $fields = [];
