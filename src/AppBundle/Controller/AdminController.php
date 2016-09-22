@@ -422,7 +422,7 @@ class AdminController extends Controller{
             array_push($cert_list[$hour], $cert);
         }
         $response = new Response;
-        $response->setContent("<html><body>".json_encode($cert_list)."</body></html>");
+        $response->setContent(json_encode($cert_list));
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
