@@ -393,15 +393,15 @@ class AdminController extends Controller{
         $date = strtotime($request->query->get('date'));
         $sql = "
             SELECT
-                Sertificate.ID_Sertificate AS 'id',
-                FlightType.name AS 'flight_type',
+                sertificate.ID_Sertificate AS 'id',
+                flight_type.name AS 'flight_type',
                 DATEPART(hh,Sertificate.use_time) AS 'hour'
             FROM
                 sertificate
             LEFT JOIN
                 flight_type
             ON
-                FlightType.ID_FlightType = Sertificate.ID_FlightType
+                flight_type.ID_FlightType = sertificate.ID_FlightType
             WHERE
                 (DATEPART(year, Sertificate.use_time) = DATEPART(year,:userDate)) AND 
                 (DATEPART(day, Sertificate.use_time) = DATEPART(day, :userDate)) AND 
