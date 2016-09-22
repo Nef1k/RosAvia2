@@ -60,7 +60,7 @@ services:
          arguments: ["@doctrine.orm.entity_manager"]
          tags:
              - { name: validator.constraint_validator }
-      validator.CheckCertStateValidator:
+     validator.CheckCertStateValidator:
          class: AppBundle\Validator\Constraints\CheckCertStateValidator
          arguments: ["@doctrine.orm.entity_manager"]
          tags:
