@@ -60,6 +60,11 @@ services:
          arguments: ["@doctrine.orm.entity_manager"]
          tags:
              - { name: validator.constraint_validator }
+      validator.CheckCertStateValidator:
+         class: AppBundle\Validator\Constraints\CheckCertStateValidator
+         arguments: ["@doctrine.orm.entity_manager"]
+         tags:
+             - { name: validator.constraint_validator }
      #Stuff
      app.manager_stuff:
          class: AppBundle\Stuff\ManagerStuff
@@ -70,11 +75,11 @@ services:
          arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
 
      app.certificate_stuff:
-              class: AppBundle\Stuff\CertificateStuff
-              arguments: ["@doctrine.orm.entity_manager", "@security.token_storage", "@app.sms_stuff"]
+         class: AppBundle\Stuff\CertificateStuff
+         arguments: ["@doctrine.orm.entity_manager", "@security.token_storage", "@app.sms_stuff"]
      app.sms_stuff:
-                   class: AppBundle\Stuff\SmsStuff
-                   arguments: ["@doctrine.orm.entity_manager", "@security.token_storage", "@app.sms"]
+         class: AppBundle\Stuff\SmsStuff
+         arguments: ["@doctrine.orm.entity_manager", "@security.token_storage", "@app.sms"]
 
      #Voters
      certificate_voter:
