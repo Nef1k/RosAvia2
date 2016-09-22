@@ -33,7 +33,7 @@ function fillTimeTableWithData(table_selector, data){
 
 }
 function getTimeTableData(date){
-    jQuery.getJSON("/admin/timeTable&date", function (data){
+    jQuery.getJSON("/admin/show_day_schedule?date="+date, function (data){
         $(".loader-row").remove();
         fillTimeTableWithData("#time_table", data);
     });
