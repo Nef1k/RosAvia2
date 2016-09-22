@@ -12,7 +12,29 @@ function createModalNoBtn(event){
     yesNoDialog.close();
 }
 function createModalYesBtn(event) {
-    yesNoDialog.close();
+    /** @var YesNoDialog modal */
+    var modal = event.data;
+
+    if (modal.data !== "undefined") {
+        modal.showLoader();
+        console.log("Creating certificates:", modal.data);
+        jQuery.post("/admin/cert_creation", {cert_ids: JSON.stringify(modal.data)}, function(data){
+            modal.hideLoader();
+            modal.no_caption = "";
+            modal.yes_caption = "Ок";
+            modal.yes_handler = createModalNoBtn;
+
+            var errors = data.error_msg;
+            if (errors.length > 0){
+                modal.message = "Возникли следующие ошибки при добавлении сертификатов: <br>" + errors.join(" <br>");
+            }
+            else{
+                modal.message = "Сертификаты <code>"+ modal.data.join(", ") +"</code> успешно добавлены!";
+            }
+
+            modal.applyParams();
+        });
+    }
 }
 
 function isInvalid(value){
@@ -38,7 +60,7 @@ function generateAmount(offset, count){
 }
 
 function parseCertificateList(){
-    var ID_Certificate = $("[name='ID_Certificate']").val();
+    var ID_Certificate = parseInt($("[name='ID_Certificate']").val());
     var range = {
         from: parseInt($("[name='range_from']").val()),
         to: parseInt($("[name='range_to']").val())
@@ -79,12 +101,15 @@ function createBtnClick(){
         "Неправильно заполнены поля";
 
     yesNoDialog.setModalSelector("#yes-no-modal");
+    yesNoDialog.hideLoader();
     yesNoDialog.show({
         caption: "Создание сертификатов",
         message: msg,
 
         yes_caption: "Да",
         no_caption: "Нет",
+
+        data: (userInput) ? userInput.certificates : "undefined",
 
         yes_handler: createModalYesBtn,
         no_handler: createModalNoBtn

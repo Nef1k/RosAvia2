@@ -11,6 +11,8 @@ YesNoDialog = function(){
     this.yes_caption = "";
     this.no_caption = "";
 
+    this.data = {};
+
     this.yes_handler = function(event){};
     this.no_handler = function(event){};
 
@@ -39,12 +41,28 @@ YesNoDialog = function(){
     this.applyParams = function(){
         $(this.modal_selector + " .modal-caption").html(this.caption);
         $(this.modal_selector + " .modal-message").html(this.message);
-        $(this.modal_selector + " .modal-yes-btn")
-            .html(this.yes_caption)
-            .click(this, this.yes_handler);
-        $(this.modal_selector + " .modal-no-btn")
-            .html(this.no_caption)
-            .click(this, this.no_handler);
+
+        if (this.yes_caption == ""){
+            $(this.modal_selector + " .modal-yes-btn").addClass("hidden");
+        }
+        else {
+            $(this.modal_selector + " .modal-yes-btn")
+                .html(this.yes_caption)
+                .unbind("click")
+                .click(this, this.yes_handler)
+                .removeClass("hidden");
+        }
+
+        if (this.no_caption == "") {
+            $(this.modal_selector + " .modal-no-btn").addClass("hidden");
+        }
+        else {
+            $(this.modal_selector + " .modal-no-btn")
+                .html(this.no_caption)
+                .unbind("click")
+                .click(this, this.no_handler)
+                .removeClass("hidden");
+        }
     };
     this.setParams = function(param_list){
         if (param_list.caption){
@@ -65,6 +83,10 @@ YesNoDialog = function(){
         if (param_list.no_caption){
             //console.log("param_set");
             this.no_caption = param_list.no_caption;
+        }
+
+        if (param_list.data){
+            this.data = param_list.data;
         }
 
         if (param_list.yes_handler){
