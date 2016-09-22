@@ -32,6 +32,11 @@ class Sertificate implements \Serializable
     private $phone_number;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $use_time;
+
+    /**
      * @ORM\ManyToOne(targetEntity="FlightType")
      * @ORM\JoinColumn(name="ID_FlightType", referencedColumnName="ID_FlightType", nullable=true)
      */
@@ -314,5 +319,77 @@ class Sertificate implements \Serializable
     public function getIDUser()
     {
         return $this->ID_User;
+    }
+
+    /**
+     * Set userDatetime
+     *
+     * @param \DateTime $userDatetime
+     *
+     * @return Sertificate
+     */
+    public function setUserDatetime($userDatetime)
+    {
+        $this->user_datetime = $userDatetime;
+
+        return $this;
+    }
+
+    /**
+     * Get userDatetime
+     *
+     * @return \DateTime
+     */
+    public function getUserDatetime()
+    {
+        return $this->user_datetime;
+    }
+
+    /**
+     * Set clientFlightDatetime
+     *
+     * @param \DateTime $clientFlightDatetime
+     *
+     * @return Sertificate
+     */
+    public function setClientFlightDatetime($clientFlightDatetime)
+    {
+        $this->client_flight_datetime = $clientFlightDatetime;
+
+        return $this;
+    }
+
+    /**
+     * Get clientFlightDatetime
+     *
+     * @return \DateTime
+     */
+    public function getClientFlightDatetime()
+    {
+        return $this->client_flight_datetime;
+    }
+
+    /**
+     * Set useTime
+     *
+     * @param \DateTime $useTime
+     *
+     * @return Sertificate
+     */
+    public function setUseTime($useTime)
+    {
+        $this->use_time = $useTime;
+
+        return $this;
+    }
+
+    /**
+     * Get useTime
+     *
+     * @return \DateTime
+     */
+    public function getUseTime()
+    {
+        return $this->use_time;
     }
 }
