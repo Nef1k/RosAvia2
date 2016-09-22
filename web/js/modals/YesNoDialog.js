@@ -15,31 +15,38 @@ YesNoDialog = function(){
     this.no_handler = function(event){};
 
     this.show = function(param_list){
-        this.__setParams(param_list);
-        this.__applyParams();
+        this.setParams(param_list);
+        this.applyParams();
         $(this.modal_selector).modal("show");
     };
     this.close = function(){
         $(this.modal_selector).modal("hide");
     };
 
+    this.showLoader = function(){
+        $(this.modal_selector + " .modal-message").addClass("hidden");
+        $(this.modal_selector + " .modal-loader").removeClass("hidden");
+    };
+    this.hideLoader = function(){
+        $(this.modal_selector + " .modal-message").removeClass("hidden");
+        $(this.modal_selector + " .modal-loader").addClass("hidden");
+    };
+
     this.setModalSelector = function(modal_selector){
         this.modal_selector = modal_selector;
     };
 
-    this.__applyParams = function(){
-        var modal = $(this.modal_selector);
-
+    this.applyParams = function(){
         $(this.modal_selector + " .modal-caption").html(this.caption);
         $(this.modal_selector + " .modal-message").html(this.message);
         $(this.modal_selector + " .modal-yes-btn")
             .html(this.yes_caption)
-            .click(this.yes_handler);
+            .click(this, this.yes_handler);
         $(this.modal_selector + " .modal-no-btn")
             .html(this.no_caption)
-            .click(this.no_handler);
+            .click(this, this.no_handler);
     };
-    this.__setParams = function(param_list){
+    this.setParams = function(param_list){
         if (param_list.caption){
             //console.log("param_set");
             this.caption = param_list.caption;
