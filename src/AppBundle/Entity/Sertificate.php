@@ -13,7 +13,6 @@ class Sertificate implements \Serializable
     /**
      * @ORM\Column(name="ID_Sertificate", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $ID_Sertificate;
 
