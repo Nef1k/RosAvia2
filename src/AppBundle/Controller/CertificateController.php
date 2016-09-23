@@ -201,10 +201,28 @@ class CertificateController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return Response
+     * @Route("/certificate/edit", name = "edit")
+     * @Method("POST")
+     */
+    public function certEdit(Request $request){
+        $response = new Response();
+        $id = $request->request->get('id');
+        $field_names = json_decode($request->request->get('field_names'));
+        $field_values = json_decode($request->request->get('field_values'));
+        /** @var $certificate_stuff CertificateStuff */
+        $cert_stuff = $this->get("app.certificate_stuff");
+        $response->setContent(json_encode($cert_stuff->CertEdidtion($id, $field_names, $field_values)));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+
+    /**
      * @param Sertificate $certificate
      * @param Request $request
      * @return Response
-     * 
+     *
      * @Route("/certificate/view/{certificate}", name="certificate_view")
      */
     public function viewCertificate(Sertificate $certificate, Request $request){
