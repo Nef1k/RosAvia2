@@ -32,7 +32,7 @@ class Sertificate implements \Serializable
     private $phone_number;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $use_time;
 
