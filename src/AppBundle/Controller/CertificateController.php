@@ -213,7 +213,7 @@ class CertificateController extends Controller
         $field_values = json_decode($request->request->get('field_values'));
         /** @var $certificate_stuff CertificateStuff */
         $cert_stuff = $this->get("app.certificate_stuff");
-        $response->setContent(json_encode($cert_stuff->CertEdidtion($id, $field_names, $field_values)));
+        $response->setContent(json_encode($cert_stuff->CertEdition($id, $field_names, $field_values)));
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
