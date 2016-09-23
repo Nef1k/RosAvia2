@@ -391,7 +391,7 @@ class CertificateStuff
             $cert_info["ID_Sertificate"] = $cert->getIDSertificate();
         }
         if (in_array("cert_link", $fields)){
-            $cert["cert_link"] = $this->router->generate('certificate_view',["ID_Sertificate" => $cert->getIDSertificate()]);
+            $cert_info["cert_link"] = $this->router->generate('certificate_view',["certificate" => $cert->getIDSertificate()]);
         }
         return $cert_info;
     }
