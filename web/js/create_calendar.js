@@ -66,8 +66,8 @@ function getTimeTableData(date){
 }
 
 function getCertRow(cert) {
-    return "<tr><td>"+cert.ID_Sertificate+"</td><td>"+
-            cert.flight_type+"</td></tr>"
+    return "<tr><td><a href=/'{{ path('" + cert.cert_link + "') }}'>"+cert.ID_Sertificate+"</td><td>"+
+            cert.flight_type+"</a></td></tr>"
 }
 
 function fillCertsListWithData(table_selector,data){
