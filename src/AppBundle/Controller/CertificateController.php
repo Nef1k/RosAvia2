@@ -218,7 +218,14 @@ class CertificateController extends Controller
         
         $em->persist($cert);
         $em->flush();
-        $response->headers->set('Content-Type', 'application/json');
+        $Request_output = array(
+            'error_msg' => array(),
+            'error_param' => array()
+        );
+        array_push($Request_output, 'success');
+        $response = new Response();
+        $response->setContent(json_encode($Request_output));
+        $response -> headers -> set('Content-Type', 'application/json');
         return $response;
     }
 
