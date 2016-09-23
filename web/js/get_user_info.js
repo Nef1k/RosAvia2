@@ -25,14 +25,14 @@ function attachBtnClick(event){
     $(".unatt_btn").remove();
    // $(".attach-helper").remove();
 
-    //var loader = appendLoaderInTable("#certificates-table", 2);
-    //var certificates_loader = appendLoaderGif("#unattached_certs");
+    var attached_loader = $(".attached-certificates-loader").removeClass("hidden");
+    var unattached_loader = $(".unattached-certificates-loader").removeClass("hidden");
     $("#username").html(username);
 
     //Sending AJAX request to retrieve attached certificates
     jQuery.getJSON("/admin/attach?user_id="+user_id, function (data){
-        $(loader).remove();
-        $(certificates_loader).remove();
+        var attached_loader = $(".attached-certificates-loader").addClass("hidden");
+        var unattached_loader = $(".unattached-certificates-loader").addClass("hidden");
         if (data.att_certs.length == 0){
             $("#certificates-table tr:last").after(
                 "<tr class='certificate-row'><td colspan=\"2\">Нет привязанных сертификатов</td>"

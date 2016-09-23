@@ -26,7 +26,9 @@
                         </tr>
 
                         <tr>
-
+                            <td class="attached-certificates-loader text-center hidden" colspan="2">
+                                <img src="{{ asset("img/ring-alt.gif") }}" alt="Загрузка" width="40" height="40">
+                            </td>
                         </tr>
                         <!-- Attached certificates goes here from AJAX -->
                     </table>
@@ -36,6 +38,9 @@
                 <div class="col-md-5" id="unattached_certs">
                     <h4>Непривязанные сертификаты</h4>
 
+                    <div class="unattached-certificates-loader text-center hidden">
+                        <img src="{{ asset("img/ring-alt.gif") }}" alt="Загрузка" width="40" height="40">
+                    </div>
                     <!-- List of unattached certificates goes here from AJAX -->
                 </div>
 

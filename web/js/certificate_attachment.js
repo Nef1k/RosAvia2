@@ -6,5 +6,13 @@
 
 var certificateToAttach = new CertificateList();
 
+var attachModalSelector = "#"
 
+function onModalLoad(event){
+
+}
+
+$(document).ready(function(event){
+
+});
 
