@@ -7,6 +7,7 @@ use AppBundle\Entity\SertState;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Internal\Hydration\HydrationException;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\User;
@@ -29,11 +30,15 @@ class CertificateStuff
      */
     private $smser;
 
-    public function __construct(EntityManager $em, TokenStorage $tokenStorage, SmsStuff $smser)
+
+    private $router;
+
+    public function __construct(EntityManager $em, TokenStorage $tokenStorage, SmsStuff $smser, Router $router)
     {
         $this->em = $em;
         $this->tokens = $tokenStorage;
         $this->smser = $smser;
+        $this->router = $router;
     }
 
     /**
@@ -385,6 +390,9 @@ class CertificateStuff
         if (in_array("ID_Sertificate", $fields)){
             $cert_info["ID_Sertificate"] = $cert->getIDSertificate();
         }
+        if (in_array("cert_link", $fields)){
+            $cert["cert_link"] = $this->router->generate('cert_info',["ID_Sertificate" => $cert->getIDSertificate()]);
+        }
         return $cert_info;
     }
 
@@ -413,10 +421,11 @@ class CertificateStuff
         if ((isset($object["last_name"])?$object["last_name"]:null) != null) $criteria["last_name"] = $object["last_name"];
         if ((isset($object["phone_number"])?$object["phone_number"]:null) != null) $criteria["phone_number"] = $object["phone_number"];
         if ((isset($object["use_time"])?$object["use_time"]:null) != null) $criteria["use_time"] = strtotime($object["use_time"]);
-        if ((isset($object["ID_FlightType"])?$object["ID_FlightType"]:null) != null) $criteria["ID_FlightType"] = $this->em->getRepository("AppBundle:FlightType")->find($object["ID_FlightType"]);
-        if ((isset($object["ID_SertState"])?$object["ID_SertState"]:null) != null) $criteria["ID_SertState"] = $this->em->getRepository("AppBundle:SertState")->find($object["ID_SertState"]);
-        if ((isset($object["ID_User"])?$object["ID_User"]:null) != null) $criteria["ID_User"] = $this->em->getRepository("AppBundle:User")->find($object["ID_User"]);
+        if ((isset($object["ID_FlightType"])?$object["ID_FlightType"]:null) != null) $criteria["ID_FlightType"] = $this->em->getRepository("AppBundle:FlightType")->findBy(array("ID_FlightType" => $object["ID_FlightType"]));
+        if ((isset($object["ID_SertState"])?$object["ID_SertState"]:null) != null) $criteria["ID_SertState"] = $this->em->getRepository("AppBundle:SertState")->findBy(array("ID_SertState" => $object["ID_SertState"]));
+        if ((isset($object["ID_User"])?$object["ID_User"]:null) != null) $criteria["ID_User"] = $this->em->getRepository("AppBundle:User")->findBy(array("ID_User" => $object["ID_User"]));
         return $criteria;
+        //2,3,4,5
     }
 
     /**
