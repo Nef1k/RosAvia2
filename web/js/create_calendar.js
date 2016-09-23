@@ -67,7 +67,7 @@ function getTimeTableData(date){
 
 function getCertRow(cert) {
     return "<tr><td><a href=/'{{ path('" + cert.cert_link + "') }}'>"+cert.ID_Sertificate+"</td><td>"+
-            cert.flight_type+"</a></td></tr>"
+            cert.name + " " + cert.last_name + "</a></td><td></td></tr>"
 }
 
 function fillCertsListWithData(table_selector,data){
@@ -78,7 +78,7 @@ function fillCertsListWithData(table_selector,data){
 
 function findCertificates() {
     $("#found_cert_loader").removeClass("hidden");
-    var fields = JSON.stringify(["ID_Sertificate", "flight_type", "cert_link"]);
+    var fields = JSON.stringify(["ID_Sertificate", "flight_type", "cert_link", "name", "last_name"]);
     var criteria = JSON.stringify({ "ID_SertState": [2,3,4,5]});
     jQuery.post("/certificate/select", {fields : fields, criteria : criteria}, function (data) {
         $("#found_cert_loader").addClass("hidden");

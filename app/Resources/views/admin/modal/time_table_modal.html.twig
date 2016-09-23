@@ -35,8 +35,13 @@
                         </span>
                         <input type="text" class="form-control" placeholder="Введите номер">
                     </div>
+                    <h4>Возможные сертификаты</h4>
                     <table id="found_certs" class="table table-stripped">
-                        <tr><th>Возможные сертификаты</th></tr>
+                        <tr>
+                            <th class="col-md-2">ID</th>
+                            <th class="col-md-10">Имя владельца</th>
+                            <th>&nbsp;</th>
+                        </tr>
                         <tr class="day-loader hidden" id="found_cert_loader">
                             <td class="text-center" colspan="2">
                                 <img src="{{ asset("img/ring-alt.gif") }}" alt="Загрузка..." width="40" height="40">
