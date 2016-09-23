@@ -8,13 +8,13 @@
         </div>
         <div class="modal-body">
             <div class="row">
-                <div class="col-md-9">
+                <div class="col-md-8">
                     <table class="table table-bordered" id="time_table">
                         <tr>
                             <th class="col-md-1">Время</th>
                             <th class="col-md-11">Список планируемых полетов</th>
                         </tr>
-                        <tr class="day-loader hidden">
+                        <tr class="day-loader hidden" id="time_table_loader">
                             <td class="text-center" colspan="2">
                                 <img src="{{ asset("img/ring-alt.gif") }}" alt="Загрузка..." width="40" height="40">
                             </td>
@@ -27,14 +27,22 @@
                     </table>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <h4>Номер сертификата</h4>
                     <div class="input-group">
                         <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">Go!</button>
+                            <button class="btn btn-default" type="button">Найти</button>
                         </span>
                         <input type="text" class="form-control" placeholder="Search for...">
                     </div>
+                    <table id="found_certs" class="table table-stripped">
+                        <tr><th>Возможные сертификаты</th></tr>
+                        <tr class="day-loader hidden" id="found_cert_loader">
+                            <td class="text-center" colspan="2">
+                                <img src="{{ asset("img/ring-alt.gif") }}" alt="Загрузка..." width="40" height="40">
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>

@@ -26,6 +26,7 @@ function showModal(date){
     //Retrieving per-day schedule
     var chosen_date = date.unix();
     getTimeTableData(chosen_date);
+    findCertificates();
 }
 function fillTimeTableWithData(table_selector, data){
     //If there is more than one busy hour
@@ -57,11 +58,33 @@ function fillTimeTableWithData(table_selector, data){
     }
 }
 function getTimeTableData(date){
-    $(".day-loader").removeClass("hidden");
+    $("#time_table_loader").removeClass("hidden");
     jQuery.getJSON("/admin/show_day_schedule?date="+date, function (data){
-        $(".day-loader").addClass("hidden");
+        $("#time_table_loader").addClass("hidden");
         fillTimeTableWithData("#time_table", data);
     });
+}
+
+function getCertRow(cert) {
+    return "<tr><td>"+cert.ID_Sertificate+"</td><td>"+
+            cert.flight_type+"</td></tr>"
+}
+
+function fillCertsListWithData(table_selector,data){
+    data.forEach(function(item) {
+       $(table_selector).append(getCertRow(item))
+    })
+}
+
+function findCertificates() {
+    $("#found_cert_loader").removeClass("hidden");
+    var fields = JSON.stringify(["ID_Sertificate", "flight_type", "cert_link"]);
+    var criteria = JSON.stringify({ "ID_SertState": [2,3,4,5]});
+    jQuery.post("/certificate/select", {fields : fields, criteria : criteria}, function (data) {
+        $("#found_cert_loader").addClass("hidden");
+        fillCertsListWithData("#found_certs",data)
+    })
+
 }
 
 $(document).ajaxError(function(event, jqXHR, ajaxSettings, message){
