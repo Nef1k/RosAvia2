@@ -52,7 +52,7 @@
                     <li class="list-group-item">
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">ID</span>
-                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="ID">
+                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="ID_Certificate">
                         </div>
 
                     </li>
@@ -62,12 +62,12 @@
                     <li class="list-group-item">
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">От</span>
-                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="from1">
+                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="range_from">
                         </div>
 
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">До</span>
-                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="to">
+                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="range_to">
                         </div>
 
                     </li>
@@ -77,11 +77,11 @@
                     <li class="list-group-item">
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">C</span>
-                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="from2">
+                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="amount_from">
                         </div>
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon" style="min-width: 60px;" id="sizing-addon3">Кол-во</span>
-                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="count">
+                            <input type="text" class="form-control attach-helper" placeholder="" aria-describedby="sizing-addon3" name="amount_count">
                         </div>
                     </li>
                     <li class="list-group-item">
@@ -117,6 +117,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script src="{{ asset("js/modals/YesNoDialog.js") }}" type="application/javascript"></script>
     <script src="{{ asset("js/admin_script.js") }}" type="application/javascript"></script>
     <script src="{{ asset("js/get_user_info.js") }}" type="application/javascript"></script>
 {% endblock %}
