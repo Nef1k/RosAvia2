@@ -4,5 +4,7 @@
  * Requires CertificateList
  */
 
-var certList = new CertificateList();
+var certificateToAttach = new CertificateList();
+
+
 

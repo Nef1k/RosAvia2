@@ -115,7 +115,3 @@ function createBtnClick(){
         no_handler: createModalNoBtn
     });
 }
-
-$(document).ready(function(event){
-    $("#create_certs").click(createBtnClick);
-});
