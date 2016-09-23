@@ -418,6 +418,29 @@ class CertificateStuff
 
     public function objectConvert($object){
         $criteria = [];
+        /** @var  $user User*/
+        $used = false;
+        $user = $this->tokens->getToken()->getUser();
+        $user_roles = (array) $this->tokens->getToken()->getUser();
+        $user_ids = array();
+        if (in_array("ROLE_ADMIN", $user_roles)){
+            $used = false;
+            /** @var  $users User[]*/
+            $users = $this->em->getRepository("AppBundle:User")->findBy([],[]);
+            foreach($users AS $dealer){
+                array_push($user_ids, $dealer->getIDUser());
+            }
+        } elseif (in_array("ROLE_MANAGER", $user_roles) and !($used)){
+            $used = true;
+            /** @var  $dealers User[]*/
+            $dealers = $this->em->getRepository("AppBundle:User")->findBy(array("ID_Mentor" => $user));
+            foreach($dealers AS $dealer){
+                array_push($user_ids, $dealer->getIDUser());
+            }
+            array_push($user_ids, $user->getIDUser());
+        } elseif (in_array("ROLE_DEALER", $user_roles) and !($used)){
+            array_push($user_ids, $user->getIDUser());
+        }
         if ((isset($object["ID_Sertificate"])?$object["ID_Sertificate"]:null) != null) array_push($criteria["ID_Sertificate"],$object["ID_Sertificate"]);
         if ((isset($object["name"])?$object["name"]:null) != null) $criteria["name"] = $object["name"];
         if ((isset($object["last_name"])?$object["last_name"]:null) != null) $criteria["last_name"] = $object["last_name"];
@@ -425,7 +448,19 @@ class CertificateStuff
         if ((isset($object["use_time"])?$object["use_time"]:null) != null) $criteria["use_time"] = strtotime($object["use_time"]);
         if ((isset($object["ID_FlightType"])?$object["ID_FlightType"]:null) != null) $criteria["ID_FlightType"] = $this->em->getRepository("AppBundle:FlightType")->findBy(array("ID_FlightType" => $object["ID_FlightType"]));
         if ((isset($object["ID_SertState"])?$object["ID_SertState"]:null) != null) $criteria["ID_SertState"] = $this->em->getRepository("AppBundle:SertState")->findBy(array("ID_SertState" => $object["ID_SertState"]));
-        if ((isset($object["ID_User"])?$object["ID_User"]:null) != null) $criteria["ID_User"] = $this->em->getRepository("AppBundle:User")->findBy(array("ID_User" => $object["ID_User"]));
+        if ((isset($object["ID_User"])?$object["ID_User"]:null) != null) {
+            $user_input = $object["ID_User"];
+            $right_users = [];
+            foreach($user_input AS $users_el){
+                if (in_array($users_el, $user_ids)){
+                    array_push($right_users, $users_el);
+                }
+            }
+            if (count($right_users) != 0)
+                $criteria["ID_User"] = $this->em->getRepository("AppBundle:User")->findBy(array("ID_User" => $right_users));
+        } elseif (count($user_ids) != 0) {
+            $criteria["ID_User"] = $user_ids;
+        }
         return $criteria;
         //2,3,4,5
     }
