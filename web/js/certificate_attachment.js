@@ -104,7 +104,7 @@ function onSaveBtnClick(event){
             field_values: JSON.stringify([user_id])
         };
 
-        jQuery.post("/certificate/post", postParams, function(data){
+        jQuery.post("/certificate/edit", postParams, function(data){
             console.log(data);
         });
     });
