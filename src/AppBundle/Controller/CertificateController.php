@@ -204,7 +204,7 @@ class CertificateController extends Controller
      * @param Sertificate $certificate
      * @param Request $request
      * @return Response
-     * 
+     *
      * @Route("/certificate/view/{certificate}", name="certificate_view")
      */
     public function viewCertificate(Sertificate $certificate, Request $request){
