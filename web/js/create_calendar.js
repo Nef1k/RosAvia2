@@ -108,7 +108,10 @@ function onYesSetTime(event){
     });
     modal_window.hideLoader();
     modal_window.close();
-    console.log(date, certificate_id);
+    $("#time_table").find(".hour-row").remove();
+    $("#found_certs").find(".cert_row").remove();
+    getTimeTableData(date);
+    findCertificates();
 }
 
 function onNoSetTime(event){
