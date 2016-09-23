@@ -199,9 +199,9 @@ class AdminController extends Controller{
                     setIDSertificate($cert_id)->
                     setIDSertState($cert_state)->
                     setIDUser($user);
-                $em->persist($user);
-                $em->flush();
+                $em->persist($cert);
             }
+            $em->flush();
             array_push($Request_output, 'success');
         }
         foreach($errors as $error){
