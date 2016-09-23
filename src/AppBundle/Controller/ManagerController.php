@@ -28,7 +28,7 @@ class ManagerController extends Controller
     public function managerIndexAction(Request $request)
     {
         $user = $this->getUser();
-        $dealer_list = $this->get("app.manager_stuff")->getDealerTable();
+        $dealer_list = [];//$this->get("app.manager_stuff")->getDealerTable();
 
         $query_sql = "SELECT
             sertificate_state.ID_SertState,
