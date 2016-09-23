@@ -3,6 +3,7 @@
  */
 function showModal(date){
     $("#chosen_date").html(date.format("DD.MM.YYYY"));
+    $("#time_table .hour-row").remove();
     $("#myModal").modal("show");
     $(".day-empty").addClass("hidden");
 
@@ -23,15 +24,21 @@ function fillTimeTableWithData(table_selector, data){
             if (certificates_in_hour.length != 0) {
                 //console.log($(table_selector + " tr:last"))
                 $(table_selector).append(
-                    "<tr>" +
+                    "<tr class='hour-row'>" +
                     "   <td>" + hour + ":00</td>" +
-                    "   <td><span class='certificates-in-hour-" + hour + "'>Some shit goes here</span></td>" +
+                    "   <td style='padding: 10px 20px;'>" +
+                    "       <div class='row certificates-in-hour-" + hour + "'></div>" +
+                    "   </td>" +
                     "</tr>"
                 );
 
-                certificates_in_hour.forEach(function(index, i, arr){
+                certificates_in_hour.forEach(function(item, i, arr){
                     $(table_selector + " .certificates-in-hour-"+hour).append(
-                        
+                        "<a href='#'>" +
+                        "   <div class='col-md-3'>" +
+                        "       <b>" + item.id + "</b>" + " | " + item.flight_type +
+                        "   </div>" +
+                        "</a>"
                     );
                 });
                 /*$(table_selector + " tr:last").after(
