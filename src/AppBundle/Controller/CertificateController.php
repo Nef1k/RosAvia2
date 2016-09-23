@@ -199,4 +199,17 @@ class CertificateController extends Controller
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
+
+    /**
+     * @param Sertificate $certificate
+     * @param Request $request
+     * @return Response
+     * 
+     * @Route("/certificate/view/{certificate}", name="certificate_view")
+     */
+    public function viewCertificate(Sertificate $certificate, Request $request){
+        return $this->render("certificate/certificate_view.html.twig", [
+            "certificate" => $certificate
+        ]);
+    }
 }
