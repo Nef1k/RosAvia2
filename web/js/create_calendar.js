@@ -19,7 +19,7 @@ function getHourRow(hour){
 function showModal(date){
     //Showing modal window with per-day schedule table
     $("#chosen_date").html(date.format("DD.MM.YYYY"));
-    $("#time_tabl").find(".hour-row").remove();
+    $("#time_table").find(".hour-row").remove();
     $(".day-empty").addClass("hidden");
     $("#myModal").modal("show");
 
