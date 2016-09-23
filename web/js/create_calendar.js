@@ -158,6 +158,7 @@ function fillCertsListWithData(table_selector,data){
     });
     $(".set-use-time-btn").click(onSetUseTime);
     $("#find_cert").click(data, findByIDCertificate);
+    $("#clear_filter").click(data, clearSearchFilter);
 }
 
 function findCertificates() {
@@ -187,6 +188,16 @@ function findByIDCertificate(data){
         $("#found_certs").find(".cert_row").remove();
         $("#found_certs").append("<tr class='cert_row'><td colspan='3'>Сертификат не найдет</td></tr>");
     }
+}
+
+function clearSearchFilter(event){
+    var certificate_list = event.data;
+    $("#cert_id_for_watching").val("");
+    $("#found_certs").find(".cert_row").remove();
+
+    certificate_list.forEach(function (item) {
+        $("#found_certs").append(getCertRow(item));
+    });
 }
 
 $(document).ajaxError(function(event, jqXHR, ajaxSettings, message){
