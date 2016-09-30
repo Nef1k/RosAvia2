@@ -8,7 +8,7 @@ var certificateToAttach = [];
 var isAJAXing = false;
 var attachModalSelector = "#attach-certificate-modal";
 
-function parseCertificateList(){
+function parseAttachCertificateList(){
     var ID_Certificate = parseInt($("[name='attach_ID']").val());
     var range = {
         from: parseInt($("[name='attach_range_from']").val()),
@@ -84,7 +84,7 @@ function attachBtnClick(event){
     $(attachModalSelector).data("username", username);
 }
 function onHelperAddBtnClick(event){
-    var certificates = parseCertificateList().certificates;
+    var certificates = parseAttachCertificateList().certificates;
     toggleCertList(certificates);
 }
 function onCertBtnClick(event){
@@ -100,8 +100,8 @@ function onSaveBtnClick(event){
     certificateToAttach.forEach(function(cert_id, i){
         var postParams = {
             id: cert_id,
-            field_names: JSON.stringify(["ID_User"]),
-            field_values: JSON.stringify([user_id])
+            field_names: JSON.stringify(["user_id", "id_cert_state"]),
+            field_values: JSON.stringify([user_id, 1])
         };
 
         jQuery.post("/certificate/edit", postParams, function(data){

@@ -59,7 +59,8 @@ function generateAmount(offset, count){
     return result;
 }
 
-function parseCertificateList(){
+function parseCreateCertificateList(){
+    console.log("something");
     var ID_Certificate = parseInt($("[name='ID_Certificate']").val());
     var range = {
         from: parseInt($("[name='range_from']").val()),
@@ -69,7 +70,7 @@ function parseCertificateList(){
         from: parseInt($("[name='amount_from']").val()),
         count: parseInt($("[name='amount_count']").val())
     };
-
+    console.log(ID_Certificate, range, amount);
     if (!isInvalid(ID_Certificate)){
         return {
             type: "single",
@@ -93,7 +94,8 @@ function parseCertificateList(){
 }
 
 function createBtnClick(){
-    var userInput = parseCertificateList();
+    var userInput = parseCreateCertificateList();
+    console.log(userInput);
     var certificateListStr = (userInput) ? userInput.certificates.join(", ") : "undefined";
 
     var msg = (userInput) ?

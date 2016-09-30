@@ -207,7 +207,6 @@ class CertificateController extends Controller
      * @Method("POST")
      */
     public function certEdit(Request $request){
-        $response = new Response();
         $id = $request->request->get('id');
         $field_names = json_decode($request->request->get('field_names'));
         $field_values = json_decode($request->request->get('field_values'));

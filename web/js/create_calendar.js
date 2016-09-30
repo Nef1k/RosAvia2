@@ -164,8 +164,8 @@ function fillCertsListWithData(table_selector,data){
 function findCertificates() {
     $("#found_cert_loader").removeClass("hidden");
     var fields = JSON.stringify(["ID_Sertificate", "flight_type", "cert_link", "name", "last_name"]);
-    var criteria = JSON.stringify({ "ID_SertState": [2,3,4,5]});
-    jQuery.post("/certificate/select", {fields : fields, criteria : criteria}, function (data) {
+    var criteria = JSON.stringify({ "ID_SertState": [5]});
+    jQuery.post("/certificate/select", {field_names : fields, criteria : criteria}, function (data) {
         $("#found_cert_loader").addClass("hidden");
         fillCertsListWithData("#found_certs",data)
     })

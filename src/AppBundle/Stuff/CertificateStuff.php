@@ -469,7 +469,7 @@ class CertificateStuff
      */
     public function GetCertArrayFromRequest(Request $request){
         $criteria = $this->objectConvert((array)json_decode($request->request->get('criteria')));
-        $fields = json_decode($request->request->get('fields'));
+        $fields = json_decode($request->request->get('field_names'));
         $sort = json_decode($request->request->get('sort'));
         if ($sort == null) $sort = [];
         if ($criteria == null) $criteria = [];
