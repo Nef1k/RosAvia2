@@ -124,7 +124,7 @@ class DealerController extends Controller
             'error_param' =>[]
         );
         if (count($errors) == 0){
-            $certs = $this->getDoctrine()->getRepository("AppBundle:User")->findBy(array('ID_Sertificate' => $cert_ids));
+            $certs = $em->getRepository("AppBundle:User")->findBy(array('ID_User' => $user, 'ID_Sertificate' => $cert_ids));
             foreach ($certs as $cert){
                 /**  @var $cert Sertificate*/
                 $cert_info_array = [];

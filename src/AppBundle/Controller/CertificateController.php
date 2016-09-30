@@ -40,7 +40,7 @@ class CertificateController extends Controller
      * @param Request $request
      * @return Response
      *
-     * @Route("/certificate/edit/{cert_id}", name="edit")
+     * @Route("/certificate/edition/{cert_id}", name="edition")
      */
     public function editCertAction($cert_id, Request $request)
     {
